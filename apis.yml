@@ -1,7 +1,33 @@
 aid: domob
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/domob.png
 name: domob
-description: domob is a company surfaced as a portfolio company of qiming and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Domob (多盟) is a Beijing-based mobile intelligent marketing and advertising
+  technology company founded in September 2010, positioned as one of China's
+  early smartphone advertising DSP and mobile ad-network platforms. It provides
+  data-technology and content services spanning programmatic buying (DSP), the
+  UGdesk user-growth platform, the BidMaster preferred buying platform, and the
+  BlueNova traffic-monetization platform, alongside agency and short-video
+  services partnered with ByteDance, Tencent, Kuaishou, Microsoft Advertising
+  and Xiaohongshu. For developers and app publishers, Domob distributes
+  first-party iOS and Android ad SDKs (banner, interstitial, splash, native and
+  offerwall formats) plus Unity3D and Cocos2d-x game-engine plugins via its
+  Domob-SDK GitHub organization; publishers obtain a Publisher ID and Placement
+  ID from the Domob platform to monetize apps. In 2025 the Domob SDK passed
+  CAICT dual-end (iOS/Android) security certification. This profile was surfaced
+  as a portfolio company of Qiming Venture Partners and enriched from public
+  sources.
 url: https://raw.githubusercontent.com/api-evangelist/domob/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,9 +37,16 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
+- Advertising
+- Mobile
+- AdTech
+- Marketing
+- SDK
+- DSP
+- Monetization
 apis: []
 maintainers:
 - FN: Kin Lane
@@ -22,4 +55,19 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://domob.cn
+  url: https://www.domob.cn
+- type: GitHubOrganization
+  url: https://github.com/Domob-SDK
+- type: PrivacyPolicy
+  url: https://www.domob.cn/article?id=advertiserPlatformPrivacyPolicy
+- type: Packages
+  url: packages/domob-packages.yml
+- type: SDKs
+  url: packages/domob-packages.yml
+- type: DomainSecurity
+  url: security/domob-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

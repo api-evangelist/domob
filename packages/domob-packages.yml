@@ -1,0 +1,82 @@
+generated: '2026-07-18'
+method: searched
+source: https://github.com/Domob-SDK
+notes: >-
+  Domob (多盟) distributes its mobile advertising integration primarily as
+  first-party iOS and Android ad SDKs, plus game-engine plugins (Unity3D,
+  Cocos2d-x) and an Offerwall SDK. There is no public package-registry
+  (npm/PyPI/Maven/CocoaPods) listing under the Domob org that could be
+  verified; the canonical distribution is the Domob-SDK GitHub organization
+  (integration samples + Unity/Cocos plugins). Registry entries below are the
+  official GitHub source repositories.
+packages:
+  - language: java
+    platform: android
+    registry: github
+    name: domob-android-ad-sdk-sample
+    url: https://github.com/Domob-SDK/domob-android-ad-sdk-sample
+    description: Core Domob Android ad SDK integration sample (banner, interstitial, splash).
+    official: true
+  - language: objective-c
+    platform: ios
+    registry: github
+    name: domob-ios-ad-sdk-sample
+    url: https://github.com/Domob-SDK/domob-ios-ad-sdk-sample
+    description: Core Domob iOS ad SDK integration sample (banner, interstitial, splash).
+    official: true
+  - language: java
+    platform: android
+    registry: github
+    name: android-native-ad-sdk-sample
+    url: https://github.com/Domob-SDK/android-native-ad-sdk-sample
+    description: Domob Android native ad SDK sample.
+    official: true
+  - language: objective-c
+    platform: ios
+    registry: github
+    name: ios-native-ad-sdk-sample
+    url: https://github.com/Domob-SDK/ios-native-ad-sdk-sample
+    description: Domob iOS native ad SDK sample.
+    official: true
+  - language: java
+    platform: android
+    registry: github
+    name: domob-android-offerwall-sdk-sample
+    url: https://github.com/Domob-SDK/domob-android-offerwall-sdk-sample
+    description: Domob Android Offerwall SDK integration sample.
+    official: true
+  - language: csharp
+    platform: unity3d
+    registry: github
+    name: domob-ios-ad-sdk-unity-plugin
+    url: https://github.com/Domob-SDK/domob-ios-ad-sdk-unity-plugin
+    description: Domob iOS ad SDK Unity3D plugin.
+    official: true
+  - language: javascript
+    platform: unity3d
+    registry: github
+    name: domob-android-ad-sdk-unity-plugin
+    url: https://github.com/Domob-SDK/domob-android-ad-sdk-unity-plugin
+    description: Domob Android ad SDK Unity3D plugin.
+    official: true
+  - language: javascript
+    platform: unity3d
+    registry: github
+    name: domob-android-offerwall-sdk-unity-plugin
+    url: https://github.com/Domob-SDK/domob-android-offerwall-sdk-unity-plugin
+    description: Domob Android Offerwall SDK Unity3D plugin.
+    official: true
+  - language: cpp
+    platform: cocos2dx
+    registry: github
+    name: domob-ios-ad-sdk-cocos2dx-sample
+    url: https://github.com/Domob-SDK/domob-ios-ad-sdk-cocos2dx-sample
+    description: Domob iOS ad SDK Cocos2d-x integration sample.
+    official: true
+  - language: makefile
+    platform: cocos2dx
+    registry: github
+    name: domob-android-ad-sdk-cocos2dx-sample
+    url: https://github.com/Domob-SDK/domob-android-ad-sdk-cocos2dx-sample
+    description: Domob Android ad SDK Cocos2d-x integration sample.
+    official: true

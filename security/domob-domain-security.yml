@@ -1,0 +1,15 @@
+generated: '2026-07-18'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: domob.cn
+  https: true
+  tls_cert_error: '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch,
+    certificate is not valid for ''domob.cn''. '
+  hsts: null
+domains:
+- domain: domob.cn
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false
