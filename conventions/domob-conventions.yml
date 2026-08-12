@@ -1,0 +1,134 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  Media Data API PDF (2024-11-01), reporting_api.md v1.0.3, and live probes of
+  developer.domob.cn / open.domob.cn / api.domob.cn / adx.domob.cn on 2026-08-12
+docs: https://developer.domob.cn/#/doc/api
+summary: >-
+  Cross-cutting runtime semantics for the Domob API estate. Almost every
+  convention below is UNDOCUMENTED — recorded here as an explicit absence rather
+  than omitted, because "not stated" is the finding for an integrator.
+auth_style:
+  api: domob-media-data-api
+  style: credentials-in-body + derived signature header
+  detail: >-
+    Account email/password in the JSON body; a `Token` header derived with a
+    publicly-published AES key. No bearer tokens, no OAuth, no scopes.
+  see: authentication/domob-authentication.yml
+transport:
+  https_supported: true
+  https_enforced: unknown
+  note: >-
+    Current docs use https:// for developer.domob.cn. The legacy Reporting API
+    docs use http:// in every example. HSTS was not observed on domob.cn
+    (see security/domob-domain-security.yml).
+content_type:
+  request: application/json
+  response: application/json; charset=utf-8
+  note: >-
+    Documented explicitly ("需在请求头中设置 Content-Type:application/json"). No
+    content negotiation, no alternative representations.
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  detail: >-
+    No idempotency key, no request-deduplication mechanism, and no retry guidance
+    is documented on any Domob API. The single live operation is a read
+    (POST-as-query for statistics) and is therefore naturally repeatable, but
+    Domob makes no idempotency guarantee, so NO `Idempotency` pointer is emitted
+    in apis.yml.
+pagination:
+  supported: false
+  style: none
+  params: []
+  response_fields: []
+  detail: >-
+    The Media Data API returns the entire result set for the requested window in
+    one `data.data` array with no page/limit/cursor parameter and no total count.
+    An account with many ad slots over a long range has no documented way to
+    bound the response.
+filtering:
+  params:
+    - name: slot_id
+      api: domob-media-data-api
+      detail: Optional ad-slot filter; empty string means all slots.
+    - name: region
+      api: domob-reporting-api
+      detail: >-
+        Added in Reporting API v1.0.3 — `region=all` returns one row per
+        country/region, or an ISO 3166-1 alpha-2 code for a single region.
+    - name: cur
+      api: domob-reporting-api
+      detail: >-
+        Added in v1.0.2 — `cur=usd` converts revenue to USD; default is RMB.
+        Domob warns the rate is a daily reference rate and not the settlement rate.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: false
+  detail: No user-defined metadata or tagging on any documented resource.
+request_id_tracing:
+  supported: false
+  header: null
+  detail: >-
+    No request-id, trace-id or correlation header is documented or returned. No
+    `X-Request-Id`-style header appeared on any live probe. There is no
+    documented way to reference a specific failing call in a support ticket.
+time_and_dates:
+  date_format: integer YYYYMMDD (Media Data API) / string yyyymmdd (Reporting API)
+  timezone: undocumented
+  detail: >-
+    Dates are integers, not RFC 3339 strings, and no timezone is stated anywhere —
+    a reporting API whose day boundary is undefined. Response timestamps
+    (`sysTime`) are Unix seconds.
+  granularity_rule: >-
+    Granularity is inferred from the range rather than requested: start_dt ==
+    end_dt returns hour-level rows (day_type=hr); start_dt < end_dt returns
+    day-level rows (day_type=dt).
+currency:
+  default: CNY
+  detail: >-
+    Media Data API reports CPM and media revenue in CNY (元) with no currency
+    field in the payload. The legacy Reporting API added an optional `cur=usd`.
+    Reporting API v1 also multiplied revenue by 1,000,000; v2 changed the unit
+    to *1, which is why /api_v2/applications exists alongside /api/applications.
+versioning:
+  style: path-prefix (legacy) / undated (current)
+  detail: >-
+    The Reporting API versioned by path (`/api/` -> `/api_v2/`) and by document
+    revision (v1.0.1 / v1.0.2 / v1.0.3). The current Media Data API carries no
+    version in its path, no version header and no version field — it is
+    identified only by the revision date in its document title
+    ("新-20241101"). A consumer cannot detect which revision a host is serving.
+  see: changelog/domob-changelog.yml
+error_envelope:
+  shape: '{code, msg, data, sysTime}'
+  http_status_on_error: 200
+  rfc9457: false
+  detail: >-
+    Three mutually incompatible envelopes exist across the estate. See
+    errors/domob-problem-types.yml.
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: undocumented
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After header is documented or was
+    observed. See rate-limits/domob-rate-limits.yml.
+webhooks_or_events:
+  supported: false
+  detail: >-
+    No webhook, callback, streaming or event surface is documented for the API.
+    (The mobile SDKs expose in-process delegate callbacks — DMAdViewDelegate,
+    DMInterstitialAdControllerDelegate, DMSplashAdControllerDelegate — but those
+    are client-side language callbacks, not a network event surface, and cannot
+    be modelled as AsyncAPI.)
+cross_links:
+  errors: errors/domob-problem-types.yml
+  lifecycle: lifecycle/domob-lifecycle.yml
+  authentication: authentication/domob-authentication.yml
+  rate_limits: rate-limits/domob-rate-limits.yml
+  changelog: changelog/domob-changelog.yml

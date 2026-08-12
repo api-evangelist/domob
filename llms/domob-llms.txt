@@ -1,0 +1,66 @@
+# Domob (多盟)
+
+> Beijing-based mobile intelligent marketing and advertising technology company (多盟智胜网络技术（北京）有限公司), founded September 2010, part of the BlueFocus group. Programmatic buying (DSP, RTB/PMP/PD/PDB), the UGdesk user-growth platform, the BidMaster preferred-buying platform and the BlueNova traffic-monetization platform, plus first-party mobile ad SDKs for app publishers.
+
+Generated: 2026-08-12
+Method: generated (Domob publishes no llms.txt — every /llms.txt probe returned 404 or a catch-all shell on 2026-08-12)
+Source: apis.yml and the artifacts in this repository
+
+## What is actually callable
+
+Domob's public API surface is very small. One operation is documented and live;
+everything else is either gated, undocumented, or dead.
+
+- [Media Data API](https://developer.domob.cn/#/doc/api): POST https://developer.domob.cn/developer/api/get/stats — publisher media statistics (requests, bids, impressions, clicks, CPM, media revenue) by day or hour, optionally per ad slot. Document revision 2024-11-01. Verified live 2026-08-12.
+- [Domob ADX](https://developer.domob.cn/#/doc/api): adx.domob.cn — ad exchange. Docking document updated 2025-06-13 but hosted on a BlueFocus Feishu wiki behind SSO; adx.domob.cn returns HTTP 401 anonymously. Contract not readable.
+- Domob Open API: https://open.domob.cn returns {"page":"Domob Open API"} and structured error envelopes, but publishes no operation list anywhere.
+- Reporting API for Publishers v1.0.3: still documented at https://github.com/domob-inc/reporting_api and on Domob's own help centre, but its host dvx.domob.cn is NXDOMAIN. Retired without notice.
+
+## Things an agent must know before calling
+
+- Failure is signalled in the BODY, not the status. Every outcome is HTTP 200; branch on `code` (0 = OK). A client that trusts status codes will read every error as a success.
+- The credential is an account password sent in the JSON request body. There is no API key, no token issuance, no scopes and no rotation policy.
+- The `Token` header is a signature computed with a key Domob publishes in its own PDF. It authenticates nothing.
+- No pagination, no idempotency key, no request id, no rate-limit headers, no timezone on the date fields.
+- Revenue figures are explicitly NOT settlement figures — Domob's service agreement makes the stamped statement binding.
+
+## Documentation
+
+- Developer platform: https://developer.domob.cn/
+- API docking page (document table): https://developer.domob.cn/#/doc/api
+- Media Data API document (PDF, zh-CN): https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
+- Legacy help centre and technical documentation: https://dev.domob.cn/help/index.htm
+- Technical documentation (SDK guides + Reporting API): https://dev.domob.cn/help/techdocument.htm
+- SDK downloads: https://dev.domob.cn/developers/SDKdownload.htm
+- Terms of service and privacy policy: https://dev.domob.cn/help/rule.htm
+
+## SDKs
+
+Nothing is published to any package registry (npm, PyPI, Maven Central, CocoaPods, RubyGems, crates.io all checked 2026-08-12). Distribution is zip-over-HTTP from s.domob.cn plus GitHub source repositories.
+
+- GitHub: https://github.com/Domob-SDK (samples and engine plugins, last pushed 2014-2015)
+- GitHub: https://github.com/domob-inc (video SDK sources and the Reporting API document, last pushed 2017-2018)
+- Newest publicly downloadable build: iOS independent video SDK 3.8.1, 2018-08-09
+- Current SDK line advertised on the developer platform (Android 2.2.1 / 2025-08-14, iOS 2.3.4 / 2025-09-22) has no public binary and login-gated documentation
+
+## Repository artifacts
+
+- openapi/domob-media-data-api-openapi.yml — transcription of Domob's PDF (not a provider artifact)
+- authentication/domob-authentication.yml — credential-in-body, published signing key
+- errors/domob-problem-types.yml — the three incompatible error envelopes on this estate
+- conventions/domob-conventions.yml — pagination, idempotency, tracing, versioning (mostly absent)
+- data-model/domob-data-model.yml — the reporting entity graph
+- lifecycle/domob-lifecycle.yml — retired Reporting API, no SLA, no status page
+- changelog/domob-changelog.yml — fragmented per-document version history
+- sandbox/domob-sandbox.yml — no API sandbox; SDK test Publisher IDs
+- plans/domob-plans-pricing.yml — no published plans; revenue-share settlement terms
+- rate-limits/domob-rate-limits.yml — none documented
+- conformance/domob-conformance.yml — no cross-cutting standard evidenced
+- well-known/domob-well-known.yml — no /.well-known document on any host
+- mcp/ — no first-party MCP server; candidate tool + crosswalk
+- skills/domob-media-revenue-report.md — packaged agent skill for the one live operation
+
+## Contact
+
+- Developer support: support@domob.cn
+- Company: https://www.domob.cn/aboutUs/contact

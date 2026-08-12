@@ -1,0 +1,97 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/domob-media-data-api-openapi.yml, plus live unauthenticated probes of
+  https://developer.domob.cn/developer/api/get/stats and https://open.domob.cn
+  on 2026-08-12
+format: proprietary-envelope
+rfc9457: false
+summary: >-
+  Domob does not use HTTP status codes to signal API failures and does not use
+  RFC 9457 problem+json. The Media Data API returns HTTP 200 for every outcome
+  and carries the result in a body envelope; a client MUST branch on the `code`
+  field. Domob publishes no error-code reference page, so only codes observed
+  live or shown in the provider's own document are recorded below.
+envelope:
+  api: domob-media-data-api
+  content_type: application/json; charset=utf-8
+  fields:
+    code: integer — 0 means success, non-zero means failure
+    msg: string — human-readable status marker, localized to Chinese on failure
+    data: object — payload, {} on failure
+    sysTime: integer — Unix seconds
+  http_status_on_error: 200
+  documented_error_catalog: false
+problem_types:
+  - code: 0
+    http_status: 200
+    title: OK
+    meaning: Request succeeded; `data.dim` and `data.data` are populated.
+    source: provider document (Media Data API PDF, section 4)
+    method: derived
+  - code: 1
+    http_status: 200
+    title: 邮箱或密码信息为空
+    title_en: Email or password information is empty
+    meaning: >-
+      `user_info.username` and/or `user_info.password` were absent from the
+      request body.
+    remediation: Send both credential fields in `user_info`.
+    source: >-
+      observed live 2026-08-12 — POST https://developer.domob.cn/developer/api/get/stats
+      with body {} returned
+      {"code":1,"data":{},"msg":"邮箱或密码信息为空","sysTime":1786560434}
+    method: probed
+gateway_errors:
+  - host: open.domob.cn
+    content_type: application/json;charset=UTF-8
+    envelope:
+      error_code: string
+      error_description: string
+    observed:
+      - error_code: '10103'
+        http_status: 404
+        error_description: request api not found
+        note: >-
+          Observed on every unrouted path. This is a SECOND, incompatible error
+          envelope on the Domob estate — open.domob.cn uses
+          error_code/error_description while developer.domob.cn uses
+          code/msg/data/sysTime.
+        method: probed
+  - host: developer.domob.cn
+    content_type: application/json; charset=UTF-8
+    envelope:
+      code: integer
+      data: array
+      message: string
+    observed:
+      - code: 2000
+        http_status: 200
+        message: 你没有登录, 请先登录
+        message_en: You are not logged in, please log in first
+        note: >-
+          Returned by the developer platform for every unrouted or
+          authentication-required path, as HTTP 200. A THIRD envelope shape
+          (`message`, not `msg`), and a soft-200 — an agent cannot distinguish
+          "not found" from "not authenticated" from "success" by status code.
+        method: probed
+findings:
+  - id: no-status-code-semantics
+    severity: high
+    detail: >-
+      Failures are returned as HTTP 200. Any generic HTTP client, retry layer or
+      agent that trusts status codes will treat every error as a success.
+  - id: three-incompatible-error-envelopes
+    severity: medium
+    detail: >-
+      code/msg/data/sysTime (Media Data API), error_code/error_description
+      (open.domob.cn) and code/message/data (developer platform gate) coexist on
+      one estate.
+  - id: no-published-error-reference
+    severity: medium
+    detail: >-
+      No error-code reference page exists on any Domob docs surface, so the code
+      space is undiscoverable without hitting each failure in production.
+  - id: localized-error-text-only
+    severity: low
+    detail: Error messages are Chinese-only, with no machine-stable error slug.

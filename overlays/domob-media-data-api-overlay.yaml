@@ -1,0 +1,59 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Domob Media Data API
+  version: 1.0.0
+extends: ../openapi/domob-media-data-api-openapi.yml
+x-provenance:
+  generated: '2026-08-12'
+  method: generated
+  source: >-
+    openapi/domob-media-data-api-openapi.yml — captures the API Evangelist
+    enhancements layered on top of Domob's published PDF document, so the
+    transcription and our annotations stay separable.
+actions:
+  - target: $.info
+    description: >-
+      Record that Domob publishes no machine-readable contract; this OpenAPI is
+      a transcription of a PDF, and consumers should treat the PDF as canonical.
+    update:
+      x-contract-origin: pdf-transcription
+      x-canonical-doc: https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
+      x-docs-language: zh-CN
+  - target: $.paths['/developer/api/get/stats'].post
+    description: >-
+      Flag the non-standard error model: the API never uses HTTP status codes to
+      signal failure. Every outcome is HTTP 200 and the body's `code` field is
+      the only failure signal, so clients MUST branch on `code`, not on status.
+    update:
+      x-error-model: envelope-only
+      x-http-status-semantics: >-
+        HTTP 200 on both success and failure; verified live 2026-08-12 by an
+        unauthenticated POST returning 200 with code=1.
+      x-idempotent: true
+      x-read-only: true
+  - target: >-
+      $.paths['/developer/api/get/stats'].post.parameters[?(@.name=='Token')]
+    description: >-
+      Annotate that the Token header is a derived signature over a
+      publicly-published key, not a secret, so it cannot be treated as
+      authentication by an integrating agent.
+    update:
+      x-signature-only: true
+      x-shared-key-published: true
+  - target: $.components.schemas.UserInfo
+    description: >-
+      Flag credential-in-body: account email and password travel in the JSON
+      request payload on every call, which means the caller must store a
+      long-lived reusable password rather than a scoped token.
+    update:
+      x-credential-in-body: true
+      x-credential-rotation: none-documented
+  - target: $.components.schemas.StatsRow
+    description: >-
+      Record the derived time-granularity rule so a client can predict which
+      shape it will get without re-reading the prose.
+    update:
+      x-granularity-rule: >-
+        start_dt == end_dt yields hour-level rows (day_type=hr);
+        start_dt < end_dt yields day-level rows (day_type=dt).
+      x-currency: CNY

@@ -1,15 +1,122 @@
-generated: '2026-07-18'
+generated: '2026-08-12'
 method: searched
-source: https://github.com/Domob-SDK
+source: >-
+  https://github.com/Domob-SDK, https://github.com/domob-inc,
+  https://dev.domob.cn/developers/SDKdownload.htm,
+  https://developer.domob.cn/#/doc/sdkWord, and registry lookups against
+  registry.npmjs.org, pypi.org, rubygems.org, crates.io on 2026-08-12
 notes: >-
-  Domob (多盟) distributes its mobile advertising integration primarily as
-  first-party iOS and Android ad SDKs, plus game-engine plugins (Unity3D,
-  Cocos2d-x) and an Offerwall SDK. There is no public package-registry
-  (npm/PyPI/Maven/CocoaPods) listing under the Domob org that could be
-  verified; the canonical distribution is the Domob-SDK GitHub organization
-  (integration samples + Unity/Cocos plugins). Registry entries below are the
-  official GitHub source repositories.
+  Domob (多盟) distributes its mobile advertising integration as first-party iOS
+  and Android ad SDKs, plus game-engine plugins (Unity3D, Cocos2d-x) and an
+  Offerwall SDK. NOTHING IS PUBLISHED TO A PACKAGE REGISTRY. There is no npm,
+  PyPI, Maven Central, CocoaPods, RubyGems or crates.io entry under a Domob
+  namespace — confirmed 2026-08-12 (registry.npmjs.org/domob 404,
+  pypi.org/pypi/domob/json 404, rubygems.org/api/v1/gems/domob.json 404,
+  crates.io/api/v1/crates/domob 404). Distribution is by zip download from
+  Domob's CDN (s.domob.cn) and by GitHub repository.
+
+  CURRENCY IS THE STORY HERE. Every distribution channel Domob still serves is
+  stale: the newest CDN build is 2018-08-09, the core Android ad SDK build on
+  the download page is 4.5.4 from 2015-05-21, and every GitHub sample repository
+  was last pushed between 2014 and 2018. The developer platform simultaneously
+  advertises a DIFFERENT, newer SDK line (Android 2.2.1 dated 2025-08-14, iOS
+  2.3.4 dated 2025-09-22) whose binaries are NOT published on the download page
+  and whose documentation is on a login-gated Feishu wiki — so the current SDK
+  is not publicly obtainable, and the publicly obtainable SDK is 8-11 years old.
+
+  `version: null` on a GitHub-source entry means the repository publishes no
+  tags or releases; `published:` on those entries records the last push date,
+  which is the only dated signal available.
+current_sdk_line:
+  note: >-
+    Listed on the Domob developer platform's SDK documentation page. Binaries are
+    not publicly downloadable and the docs sit behind a BlueFocus Feishu login,
+    so these are version facts read from the platform's own document table, not
+    packages we could retrieve.
+  entries:
+    - name: Domob SDK integration document (domestic)
+      version: 3.2.0
+      published: '2023-01-18'
+      url: https://bluefocus.feishu.cn/wiki/VCrpw7vXFiGzvSk1XdRcrGaEn6e
+      access: login-required
+      source: https://developer.domob.cn/#/doc/sdkWord
+    - name: Domob SDK document (overseas, Android)
+      version: 2.2.1
+      published: '2025-08-14'
+      url: https://bluefocus.feishu.cn/wiki/Ds6dwulrHist2HkCbbQcYwXln9g
+      access: login-required
+      source: https://developer.domob.cn/#/abroad/doc/sdkWord
+    - name: Domob SDK document (overseas, iOS)
+      version: 2.3.4
+      published: '2025-09-22'
+      url: https://bluefocus.feishu.cn/wiki/LxarwTq8hitXOakkJWYc0Zx6n5e
+      access: login-required
+      source: https://developer.domob.cn/#/abroad/doc/sdkWord
 packages:
+  # ---- CDN-distributed zip builds (dev.domob.cn download page) ----
+  - language: java
+    platform: android
+    registry: cdn
+    name: domob_android_independent_video_sdk
+    url: http://s.domob.cn/sdk/domob_android_independent_video_sdk1.1.4.zip
+    description: Domob Android rewarded/independent video SDK (zip build).
+    official: true
+    version: 1.1.4
+    published: '2017-06-30'
+    version_source: >-
+      Version is pinned in the CDN filename and stated on
+      https://dev.domob.cn/developers/SDKdownload.htm (584KB, md5 published).
+    changelog: https://dev.domob.cn/developers/changelog/android_independent_video_sdk_changelog.html
+    note: >-
+      Distribution is over plain HTTP with no HTTPS variant offered. Download
+      returned HTTP 200 on 2026-08-12.
+  - language: objective-c
+    platform: ios
+    registry: cdn
+    name: domob_ios_independent_video_sdk
+    url: http://s.domob.cn/sdk/domob_ios_independent_video_sdk3.8.1.zip
+    description: Domob iOS rewarded/independent video SDK and documentation (zip build).
+    official: true
+    version: 3.8.1
+    published: '2018-08-09'
+    version_source: >-
+      Pinned in the CDN filename; 34.0MB, md5 published on the download page.
+    changelog: https://dev.domob.cn/developers/changelog/ios_independent_video_sdk_changelog.html
+    note: Most recent build Domob publishes anywhere publicly. Plain HTTP only.
+  - language: java
+    platform: android
+    registry: cdn
+    name: domob_android_offerwall_sdk
+    url: http://s.domob.cn/sdk/domob_android_offerwall_sdk-4.3.0.zip
+    description: Domob Android Offerwall (积分墙) SDK (zip build).
+    official: true
+    version: 4.3.0
+    published: '2016-08-09'
+    changelog: https://dev.domob.cn/developers/changelog/androidow_sdk_changelog.html
+  - language: objective-c
+    platform: ios
+    registry: cdn
+    name: domob_ios_offerwall_sdk
+    url: http://s.domob.cn/sdk/domob_ios_offerwall_sdk-5.3.0.zip
+    description: Domob iOS Offerwall (积分墙) SDK (zip build).
+    official: true
+    version: 5.3.0
+    published: '2014-06-18'
+    changelog: https://dev.domob.cn/developers/changelog/iosow_sdk_changelog.html
+  - language: java
+    platform: android
+    registry: cdn
+    name: domob_android_sdk
+    url: http://s.domob.cn/sdk/domob_android_sdk-4.5.4.zip
+    description: Domob Android ad SDK — banner, interstitial and splash (zip build).
+    official: true
+    version: 4.5.4
+    published: '2015-05-21'
+    changelog: https://dev.domob.cn/developers/changelog/android_sdk_changelog.html
+    note: >-
+      The core Android ad SDK. Its download tile is commented out of the live
+      download page's HTML but the asset and changelog are still served.
+  # ---- GitHub source repositories: Domob-SDK organization ----
   - language: java
     platform: android
     registry: github
@@ -17,6 +124,9 @@ packages:
     url: https://github.com/Domob-SDK/domob-android-ad-sdk-sample
     description: Core Domob Android ad SDK integration sample (banner, interstitial, splash).
     official: true
+    version: null
+    published: '2015-01-15'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: objective-c
     platform: ios
     registry: github
@@ -24,6 +134,9 @@ packages:
     url: https://github.com/Domob-SDK/domob-ios-ad-sdk-sample
     description: Core Domob iOS ad SDK integration sample (banner, interstitial, splash).
     official: true
+    version: null
+    published: '2015-01-15'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: java
     platform: android
     registry: github
@@ -31,6 +144,9 @@ packages:
     url: https://github.com/Domob-SDK/android-native-ad-sdk-sample
     description: Domob Android native ad SDK sample.
     official: true
+    version: null
+    published: '2015-03-19'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: objective-c
     platform: ios
     registry: github
@@ -38,6 +154,19 @@ packages:
     url: https://github.com/Domob-SDK/ios-native-ad-sdk-sample
     description: Domob iOS native ad SDK sample.
     official: true
+    version: null
+    published: '2015-01-19'
+    note: No tags or releases; `published` is the repository's last push date.
+  - language: java
+    platform: android
+    registry: github
+    name: android-ad-sdk-native-sample
+    url: https://github.com/Domob-SDK/android-ad-sdk-native-sample
+    description: Domob Android ad SDK native sample.
+    official: true
+    version: null
+    published: '2015-01-22'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: java
     platform: android
     registry: github
@@ -45,6 +174,9 @@ packages:
     url: https://github.com/Domob-SDK/domob-android-offerwall-sdk-sample
     description: Domob Android Offerwall SDK integration sample.
     official: true
+    version: null
+    published: '2014-01-15'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: csharp
     platform: unity3d
     registry: github
@@ -52,6 +184,9 @@ packages:
     url: https://github.com/Domob-SDK/domob-ios-ad-sdk-unity-plugin
     description: Domob iOS ad SDK Unity3D plugin.
     official: true
+    version: null
+    published: '2014-08-14'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: javascript
     platform: unity3d
     registry: github
@@ -59,6 +194,29 @@ packages:
     url: https://github.com/Domob-SDK/domob-android-ad-sdk-unity-plugin
     description: Domob Android ad SDK Unity3D plugin.
     official: true
+    version: null
+    published: '2014-01-20'
+    note: No tags or releases; `published` is the repository's last push date.
+  - language: javascript
+    platform: unity3d
+    registry: github
+    name: domob-android-ad-sdk-unity-plugin-sample
+    url: https://github.com/Domob-SDK/domob-android-ad-sdk-unity-plugin-sample
+    description: Sample project for the Domob Android ad SDK Unity3D plugin.
+    official: true
+    version: null
+    published: '2014-01-21'
+    note: No tags or releases; `published` is the repository's last push date.
+  - language: javascript
+    platform: unity3d
+    registry: github
+    name: domob-android-ad-sdk-unity3d-sample
+    url: https://github.com/Domob-SDK/domob-android-ad-sdk-unity3d-sample
+    description: Second Unity3D sample for the Domob Android ad SDK.
+    official: true
+    version: null
+    published: '2015-04-27'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: javascript
     platform: unity3d
     registry: github
@@ -66,6 +224,19 @@ packages:
     url: https://github.com/Domob-SDK/domob-android-offerwall-sdk-unity-plugin
     description: Domob Android Offerwall SDK Unity3D plugin.
     official: true
+    version: null
+    published: '2014-01-20'
+    note: No tags or releases; `published` is the repository's last push date.
+  - language: javascript
+    platform: unity3d
+    registry: github
+    name: domob-android-offerwall-sdk-unity-plugin-sample
+    url: https://github.com/Domob-SDK/domob-android-offerwall-sdk-unity-plugin-sample
+    description: Sample project for the Domob Android Offerwall SDK Unity3D plugin.
+    official: true
+    version: null
+    published: '2014-01-22'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: cpp
     platform: cocos2dx
     registry: github
@@ -73,6 +244,9 @@ packages:
     url: https://github.com/Domob-SDK/domob-ios-ad-sdk-cocos2dx-sample
     description: Domob iOS ad SDK Cocos2d-x integration sample.
     official: true
+    version: null
+    published: '2014-12-12'
+    note: No tags or releases; `published` is the repository's last push date.
   - language: makefile
     platform: cocos2dx
     registry: github
@@ -80,3 +254,110 @@ packages:
     url: https://github.com/Domob-SDK/domob-android-ad-sdk-cocos2dx-sample
     description: Domob Android ad SDK Cocos2d-x integration sample.
     official: true
+    version: null
+    published: '2015-04-23'
+    note: No tags or releases; `published` is the repository's last push date.
+  # ---- GitHub source repositories: domob-inc account ----
+  # Linked directly from https://dev.domob.cn/developers/SDKdownload.htm, which
+  # is how this account is established as first-party.
+  - language: java
+    platform: android
+    registry: github
+    name: DomobVideoSDK_Android
+    url: https://github.com/domob-inc/DomobVideoSDK_Android
+    description: Domob VideoSDK for Android — source repository for the rewarded video SDK.
+    official: true
+    version: null
+    published: '2017-06-28'
+    note: >-
+      Linked as "GitHub 公开库" from Domob's own SDK download page. No tags or
+      releases; `published` is the last push date.
+  - language: objective-c
+    platform: ios
+    registry: github
+    name: DomobVideoSDK_iOS
+    url: https://github.com/domob-inc/DomobVideoSDK_iOS
+    description: Domob video SDK for iOS.
+    official: true
+    version: null
+    published: '2018-03-13'
+    note: No tags or releases; `published` is the repository's last push date.
+  - language: objective-c
+    platform: ios
+    registry: github
+    name: DomobVideoSDK_IOS_3.7.1
+    url: https://github.com/domob-inc/DomobVideoSDK_IOS_3.7.1
+    description: Pinned 3.7.1 snapshot of the Domob iOS video SDK.
+    official: true
+    version: 3.7.1
+    published: '2018-03-13'
+    note: Version is pinned in the repository NAME rather than in a tag or release.
+  - language: objective-c
+    platform: ios
+    registry: github
+    name: iOS_SDK
+    url: https://github.com/domob-inc/iOS_SDK
+    description: Domob iOS SDK packaging collection (SDK打包集合).
+    official: true
+    version: null
+    published: '2017-05-26'
+  - language: java
+    platform: android
+    registry: github
+    name: AdLoad
+    url: https://github.com/domob-inc/AdLoad
+    description: Decoupled Android plugin framework used by the Domob SDK.
+    official: true
+    version: null
+    published: '2017-04-19'
+  - language: java
+    platform: android
+    registry: github
+    name: AndroidCommonLibs
+    url: https://github.com/domob-inc/AndroidCommonLibs
+    description: Domob Android development utility libraries.
+    official: true
+    version: null
+    published: '2017-05-09'
+documentation_repositories:
+  - name: reporting_api
+    url: https://github.com/domob-inc/reporting_api
+    description: >-
+      Markdown source of "Reporting API for Publishers" — the only Domob API
+      document published in a machine-readable text format anywhere.
+    version: 1.0.3
+    published: '2017-04-25'
+    note: >-
+      One revision AHEAD of the copy Domob serves on its own help centre (v1.0.2).
+      Documents a host (dvx.domob.cn) that no longer resolves.
+  - name: VideoSDK_doc
+    url: https://github.com/domob-inc/VideoSDK_doc
+    description: Chinese-language video SDK documentation set (GitBook-style markdown).
+    version: null
+    published: '2017-04-20'
+related_unofficial:
+  - registry: npm
+    name: cordova-plugin-domob
+    version: 0.0.1
+    published: '2015-07-02'
+    official: false
+    maintainer: derekhsu
+    note: Third-party Cordova wrapper for Domob ads. Not published by Domob.
+  - registry: npm
+    name: cordova-plugin-admob-domob
+    version: 0.0.2
+    published: '2015-07-02'
+    official: false
+    maintainer: derekhsu
+    note: Third-party AdMob-to-Domob mediation adapter. Not published by Domob.
+  - registry: npm
+    name: domob-temp-cli
+    version: 1.0.6
+    published: '2018-06-07'
+    official: unknown
+    maintainer: liyang1
+    note: >-
+      A template-management CLI whose repository field points at
+      git.domob-inc.cn — Domob's internal git host — which suggests an
+      employee-published internal tool. It is not an API client or ad SDK, so it
+      is recorded for provenance only and NOT counted as an official SDK.

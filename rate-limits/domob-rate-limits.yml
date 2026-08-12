@@ -1,0 +1,32 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.domob.cn/#/doc/api, the Media Data API PDF (2024-11-01),
+  https://github.com/domob-inc/reporting_api, https://dev.domob.cn/help/techdocument.htm
+  and https://dev.domob.cn/help/rule.htm — searched for quota, throttle, 限流,
+  频率, 配额 and QPS language on 2026-08-12
+docs: null
+limit_count: 0
+summary: >-
+  Domob documents no rate limits anywhere on its public API surface. Neither the
+  Media Data API document nor the Reporting API document names a quota, a window,
+  a burst allowance, a 429 behaviour or a Retry-After. No rate-limit response
+  header was observed on a live call.
+limits: []
+response_headers:
+  observed: []
+  documented: []
+  detail: >-
+    A live unauthenticated POST to
+    https://developer.domob.cn/developer/api/get/stats on 2026-08-12 returned only
+    Server, Date, Content-Type, Content-Length and Connection. No RateLimit-*,
+    X-RateLimit-*, Retry-After or vendor throttle header was present.
+status_on_exhaustion: undocumented
+note: >-
+  An honest zero. Because the API signals every outcome as HTTP 200 with a body
+  `code` (see errors/domob-problem-types.yml), a throttle response would most
+  likely also arrive as HTTP 200 — meaning an agent has no runtime signal at all
+  that it is being limited. Domob's service agreement reserves the right to
+  suspend accounts for "恶意扰乱系统运行秩序" (maliciously disrupting system
+  operation), which is a policy lever, not a published limit.
+policy_reference: https://dev.domob.cn/help/rule.htm

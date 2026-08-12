@@ -1,0 +1,111 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://developer.domob.cn/#/doc/api, https://dev.domob.cn/help/techdocument.htm,
+  https://dev.domob.cn/developers/SDKdownload.htm,
+  https://github.com/domob-inc/reporting_api, plus DNS/HTTP probes on 2026-08-12
+summary: >-
+  Domob publishes no versioning policy, no deprecation policy, no Sunset/
+  Deprecation header support, no SLA and no status page. The strongest lifecycle
+  evidence available is negative: an API that Domob's own help centre still
+  documents today points at a host that no longer resolves, and the SDK
+  downloads that same help centre serves were last updated between 2014 and 2018.
+versioning_policy:
+  published: false
+  scheme: mixed — path prefix on the retired API, document-date on the live API
+  detail: >-
+    /api/ -> /api_v2/ on the Reporting API; the Media Data API is identified only
+    by "新-20241101" in its document title. No version header, no version field,
+    no way for a client to detect the served revision.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  notice_period: none
+  detail: >-
+    No deprecation policy exists on any Domob surface, and no RFC 8594 Sunset or
+    Deprecation header was observed. The Reporting API was withdrawn without any
+    published notice — its documentation is still live while its host is gone.
+    Because Domob publishes no deprecation policy, NO `Deprecation` pointer is
+    emitted in apis.yml.
+sla:
+  published: false
+  detail: >-
+    The service agreement (https://dev.domob.cn/help/rule.htm) explicitly
+    DISCLAIMS availability: "本平台不保证服务一定能满足用户的要求，也不保证服务不会中断，
+    对服务的及时性、安全性、准确性也都不作保证" — the platform does not guarantee that
+    service will be uninterrupted, nor guarantee timeliness, security or accuracy.
+    That is an anti-SLA, published in the terms.
+status_page:
+  published: false
+  probed:
+    - url: https://status.domob.cn
+      status: null
+      note: does not resolve (no DNS answer)
+  detail: >-
+    No status page, no incident history and no uptime feed on any Domob host.
+    NO `StatusPage` pointer is emitted in apis.yml.
+apis:
+  - api: domob-media-data-api
+    state: current
+    since: '2024-11-01'
+    evidence:
+      - >-
+        Document "媒体数据API接口（新-20241101）" listed on
+        https://developer.domob.cn/#/doc/api with updateDate 2024-11-01.
+      - >-
+        Live 2026-08-12: unauthenticated POST to
+        https://developer.domob.cn/developer/api/get/stats returned HTTP 200 with
+        the documented envelope.
+  - api: domob-adx
+    state: current
+    since: '2025-06-13'
+    evidence:
+      - >-
+        "Domob ADX" docking document listed on https://developer.domob.cn/#/doc/api
+        with updateDate 2025-06-13, hosted on a BlueFocus Feishu wiki.
+      - https://adx.domob.cn/ returned HTTP 401 on 2026-08-12 (host live, gated).
+    note: Documentation is behind a BlueFocus SSO login; contract not readable.
+  - api: domob-reporting-api
+    state: retired
+    last_documented_version: 1.0.3
+    evidence:
+      - >-
+        Still published today at https://dev.domob.cn/help/techdocument.htm
+        (section "Reporting API for Publishers v.1.0.2") and at
+        https://github.com/domob-inc/reporting_api (v1.0.3).
+      - >-
+        Its documented host dvx.domob.cn returns NXDOMAIN (verified against
+        8.8.8.8 on 2026-08-12) — the API is not callable at any documented URL.
+    withdrawal_notice: none
+    note: >-
+      Recorded as retired rather than as a live API. No OpenAPI was generated for
+      it: writing a spec for a dead host would manufacture callable-looking
+      evidence for a surface that cannot be called.
+  - api: domob-open-api
+    state: live-undocumented
+    evidence:
+      - >-
+        https://open.domob.cn/ returned HTTP 200 with {"page":"Domob Open API"}
+        on 2026-08-12 and answers unrouted paths with
+        {"error_code":"10103","error_description":"request api not found"}.
+    note: >-
+      A live, self-identified API gateway with no discoverable documentation,
+      no listing on the developer platform, and no operations we can name. Not
+      registered as an API entry because nothing about its contract is published.
+sdk_lifecycle:
+  detail: >-
+    The download page Domob still serves (https://dev.domob.cn/developers/SDKdownload.htm)
+    offers builds whose most recent update is 2018-08-09; the core Android ad SDK
+    build linked there is 4.5.4 from 2015-05-21. The GitHub sample repositories
+    were last pushed in 2015. Meanwhile the developer platform's own SDK
+    documentation page lists current SDK docs at 2.2.1 (Android, 2025-08-14) and
+    2.3.4 (iOS, 2025-09-22) — a different, newer SDK line whose binaries are not
+    published on the download page. Two SDK generations are advertised
+    simultaneously with no migration note.
+  see: packages/domob-packages.yml
+support:
+  email: support@domob.cn
+  contact_page: https://www.domob.cn/aboutUs/contact
+  detail: Email support only; no ticketing system, forum or developer community.

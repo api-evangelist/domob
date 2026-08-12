@@ -1,0 +1,122 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/domob-media-data-api-openapi.yml plus the published Reporting API
+  document (https://github.com/domob-inc/reporting_api)
+summary: >-
+  The Domob publisher data model is a shallow reporting graph, not a resource
+  API. There are no CRUD resources, no ids that can be dereferenced, and no
+  $ref links between entities other than the response envelope's own nesting.
+  Identity is carried by three opaque ids — developer id, publisher id and ad
+  slot id — that appear in payloads but have no retrieval endpoint of their own
+  on the live API.
+entities:
+  - name: StatsRequest
+    api: domob-media-data-api
+    kind: request-envelope
+    fields: [user_info, export_info]
+  - name: UserInfo
+    api: domob-media-data-api
+    kind: credential
+    fields: [username, password]
+    note: >-
+      The account is identified by email, not by an id. There is no account
+      resource to fetch.
+  - name: ExportInfo
+    api: domob-media-data-api
+    kind: query
+    fields: [slot_id, start_dt, end_dt]
+  - name: StatsResponse
+    api: domob-media-data-api
+    kind: response-envelope
+    fields: [code, data, msg, sysTime]
+  - name: StatsData
+    api: domob-media-data-api
+    kind: container
+    fields: [dim, data]
+  - name: Dimension
+    api: domob-media-data-api
+    kind: column-descriptor
+    fields: [label, name]
+    note: >-
+      A self-describing column dictionary shipped alongside every response —
+      `label` is the row field key and `name` its Chinese display name. Unusual
+      and genuinely useful: the payload documents its own columns at runtime.
+  - name: StatsRow
+    api: domob-media-data-api
+    kind: fact
+    grain: (day_type, summary, media_ad_slot, application_id)
+    measures: [req, bid, imp, clk, cpm_price, media_price]
+    fields:
+      [day_type, summary, name, media_ad_slot, req, bid, imp, clk, cpm_price,
+       media_price, application_id]
+  - name: Application
+    api: domob-reporting-api
+    kind: resource
+    fields: [deverid, pubid, name, platform, status]
+    note: Retired host; documented but not callable. See lifecycle/domob-lifecycle.yml.
+relationships:
+  - from: StatsRequest
+    to: UserInfo
+    type: has_one
+    via: user_info
+  - from: StatsRequest
+    to: ExportInfo
+    type: has_one
+    via: export_info
+  - from: StatsResponse
+    to: StatsData
+    type: has_one
+    via: data
+  - from: StatsData
+    to: Dimension
+    type: has_many
+    via: dim
+  - from: StatsData
+    to: StatsRow
+    type: has_many
+    via: data
+  - from: StatsRow
+    to: Application
+    type: belongs_to
+    via: application_id
+    confidence: medium
+    note: >-
+      Inferred: `application_id` in a stats row and `pubid`/app identity in the
+      Reporting API describe the same publisher application, but Domob publishes
+      no endpoint that resolves an application_id on the live API, so the join is
+      not traversable in practice.
+  - from: StatsRow
+    to: AdSlot
+    type: belongs_to
+    via: media_ad_slot
+    confidence: high
+    note: >-
+      `media_ad_slot` matches the `slot_id` request filter. Observed slot ids take
+      two shapes in the provider's own examples — a bare numeric ("1234") and a
+      prefixed composite ("2_1654514898") — with no documented format.
+identifiers:
+  - id: deverid
+    scope: developer account
+    format: numeric string
+    resolvable: false
+  - id: pubid
+    scope: publisher application
+    format: opaque base64-like string containing '/' characters
+    resolvable: false
+    note: >-
+      The '/' inside pubid is used unescaped as a path segment in the provider's
+      own curl examples (/api/applications/96Z...-edY/wTBSK), which breaks path
+      parsing for any standard client. A real, published defect in the retired API.
+  - id: slot_id / media_ad_slot
+    scope: ad slot
+    format: numeric or '<n>_<n>' composite
+    resolvable: false
+  - id: application_id
+    scope: application
+    format: integer
+    resolvable: false
+notes: >-
+  No subway/ render exists for this provider. There is no entity with a
+  create/update/delete operation anywhere in Domob's public API surface — the
+  entire published contract is one read.

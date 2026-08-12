@@ -1,0 +1,129 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://github.com/domob-inc/reporting_api/blob/master/reporting_api.md,
+  https://dev.domob.cn/help/techdocument.htm,
+  https://dev.domob.cn/developers/changelog/*.html,
+  https://developer.domob.cn/#/doc/api
+summary: >-
+  Domob maintains no unified, dated API changelog. What exists is fragmented:
+  a hand-written version list inside the (retired) Reporting API document, five
+  per-SDK changelog pages on the legacy developer site, and bare "updateDate"
+  columns on the current developer platform's document tables. Nothing is dated
+  more recently than 2025 for docs and 2018 for SDK builds.
+scheme: per-document, hand-maintained
+unified_changelog: false
+feed: null
+api_changelogs:
+  - api: domob-reporting-api
+    current_version: 1.0.3
+    status: retired-host
+    source: https://github.com/domob-inc/reporting_api
+    note: >-
+      The GitHub copy (v1.0.3) is one revision AHEAD of the copy Domob still
+      serves on its own help centre (v1.0.2) — the provider's own two published
+      copies disagree.
+    entries:
+      - version: 1.0.3
+        date: null
+        breaking: false
+        additions:
+          - >-
+            Added the `region` request parameter. `region=all` returns one row
+            per country/region; an ISO 3166-1 alpha-2 code returns a single region.
+        highlights: Country/region breakdown for media statistics.
+      - version: 1.0.2
+        date: null
+        breaking: true
+        additions:
+          - >-
+            Added optional `cur=usd` query parameter to report revenue in USD
+            (daily reference rate, explicitly not the settlement rate). Default
+            remains RMB.
+          - >-
+            Added a v2 reporting path — revenue unit changed from *1000000 to *1,
+            served at /api_v2/applications instead of /api/applications.
+        highlights: >-
+          The revenue-unit change is breaking, and Domob shipped it as a NEW PATH
+          rather than mutating v1 — a versioning decision worth crediting even
+          though the API is now dead.
+      - version: 1.0.1
+        date: null
+        breaking: false
+        additions:
+          - Added `hr` section support for hour-level time selection.
+  - api: domob-media-data-api
+    current_version: '2024-11-01'
+    status: current
+    source: https://developer.domob.cn/#/doc/api
+    note: >-
+      No changelog is published for this API. The only version signal is the
+      document title ("媒体数据API接口（新-20241101）") and the updateDate column on the
+      developer platform's document table.
+    entries:
+      - version: '2024-11-01'
+        date: '2024-11-01'
+        breaking: unknown
+        highlights: >-
+          Current published revision of the Media Data API document. The prior
+          revision is not published, so no diff is possible.
+  - api: domob-adx
+    current_version: null
+    status: current
+    source: https://developer.domob.cn/#/doc/api
+    entries:
+      - version: null
+        date: '2025-06-13'
+        breaking: unknown
+        highlights: >-
+          Most recent updateDate on the Domob ADX docking document. Content is
+          behind a BlueFocus Feishu SSO login and could not be read.
+sdk_changelogs:
+  - name: Domob SDK integration doc (domestic)
+    version: 3.2.0
+    date: '2023-01-18'
+    source: https://developer.domob.cn/#/doc/sdkWord
+  - name: Domob SDK doc (overseas, Android)
+    version: 2.2.1
+    date: '2025-08-14'
+    source: https://developer.domob.cn/#/abroad/doc/sdkWord
+  - name: Domob SDK doc (overseas, iOS)
+    version: 2.3.4
+    date: '2025-09-22'
+    source: https://developer.domob.cn/#/abroad/doc/sdkWord
+  - name: Domob Android independent video SDK
+    version: 1.1.4
+    date: '2017-06-30'
+    source: https://dev.domob.cn/developers/changelog/android_independent_video_sdk_changelog.html
+    latest_entry: 修复广播引起的内存泄露，解决landing页面局部黑屏现象
+  - name: Domob iOS independent video SDK
+    version: 3.8.1
+    date: '2018-08-09'
+    source: https://dev.domob.cn/developers/changelog/ios_independent_video_sdk_changelog.html
+    latest_entry: fix 横竖屏 bug; added bitcode and non-bitcode builds
+  - name: Domob Android offerwall SDK
+    version: 4.3.0
+    date: '2016-08-09'
+    source: https://dev.domob.cn/developers/changelog/androidow_sdk_changelog.html
+    latest_entry: SDK adapted for Android 6.0; H5 template user-guidance copy added
+  - name: Domob iOS offerwall SDK
+    version: 5.3.0
+    date: '2014-06-18'
+    source: https://dev.domob.cn/developers/changelog/iosow_sdk_changelog.html
+  - name: Domob Android ad SDK
+    version: 4.5.4
+    date: '2015-05-21'
+    source: https://dev.domob.cn/developers/changelog/android_sdk_changelog.html
+findings:
+  - id: no-unified-changelog
+    detail: >-
+      There is no single page, feed or endpoint where an integrator can see what
+      changed across Domob's APIs.
+  - id: provider-copies-disagree
+    detail: >-
+      Reporting API v1.0.3 on GitHub vs v1.0.2 on domob.cn — the provider serves
+      two different versions of the same document.
+  - id: changelog-entries-undated
+    detail: >-
+      The Reporting API version list has version numbers but no dates, so decay
+      cannot be measured from it.

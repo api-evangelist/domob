@@ -1,0 +1,123 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  openapi/domob-media-data-api-openapi.yml, authentication/domob-authentication.yml,
+  errors/domob-problem-types.yml, conventions/domob-conventions.yml,
+  well-known/domob-well-known.yml, plus provider claims searched on
+  https://www.domob.cn/ and https://dev.domob.cn/help/rule.htm on 2026-08-12
+summary: >-
+  Domob conforms to no cross-cutting API standard we can evidence. Every
+  assertion below is `conforms: false` with the observation that produced it.
+  The one certification Domob does claim is a product-security certification of
+  its SDK, not an API conformance claim.
+standards:
+  - id: openapi
+    conforms: false
+    evidence: >-
+      No OpenAPI, Swagger or other machine-readable contract is published on any
+      Domob host. Probed /openapi.json, /openapi.yaml, /swagger.json,
+      /v2/api-docs, /v3/api-docs, /api-docs, /doc.html, /swagger-ui.html,
+      /swagger-resources, /docs and /redoc against open.domob.cn (all 404),
+      api.domob.cn (all 404) and developer.domob.cn (all soft-200 "not logged
+      in"). The OpenAPI in openapi/ is an API Evangelist transcription of Domob's
+      PDF, not a provider artifact.
+  - id: asyncapi
+    conforms: false
+    evidence: No event, webhook or streaming surface is documented. Not applicable.
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      No application/problem+json anywhere. Errors are proprietary envelopes
+      returned with HTTP 200.
+  - id: http-status-semantics
+    conforms: false
+    evidence: >-
+      Failures are returned as HTTP 200 with a body `code`. Verified live
+      2026-08-12 (code=1 "邮箱或密码信息为空" at HTTP 200).
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No oauth2 flow documented. /.well-known/oauth-authorization-server returned
+      404 on open.domob.cn and api.domob.cn, and a soft-200 gate on
+      developer.domob.cn.
+  - id: oidc
+    conforms: false
+    evidence: >-
+      No openIdConnect scheme. /.well-known/openid-configuration returned no real
+      document on any host.
+  - id: idempotency
+    conforms: false
+    evidence: No idempotency key or deduplication mechanism is documented.
+  - id: pagination
+    conforms: false
+    evidence: >-
+      No page, limit, offset or cursor parameter on any documented operation; the
+      full result set is returned in one array.
+  - id: rate-limit-headers
+    conforms: false
+    evidence: >-
+      No RateLimit-*, X-RateLimit-* or Retry-After header documented or observed
+      on a live response.
+  - id: rfc8594-sunset
+    conforms: false
+    evidence: >-
+      No Sunset or Deprecation header, and the Reporting API was withdrawn (host
+      NXDOMAIN) with its documentation still published.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: >-
+      /.well-known/security.txt returned no real document on any Domob host —
+      404 on open.domob.cn and api.domob.cn, SPA HTML on www.domob.cn, and the
+      not-logged-in JSON gate on developer.domob.cn.
+  - id: json-api
+    conforms: false
+    evidence: Proprietary envelope; no JSON:API media type or document structure.
+  - id: odata
+    conforms: false
+    evidence: Not applicable; no OData surface.
+  - id: openrtb
+    conforms: unknown
+    evidence: >-
+      Domob markets RTB/PMP/PD/PDB buying and runs an ADX at adx.domob.cn (HTTP
+      401 anonymous). OpenRTB conformance is plausible for an exchange of this
+      shape, but the ADX docking document sits behind a BlueFocus Feishu SSO
+      login, so NO conformance claim is asserted here. Recorded as unknown, not
+      as conforming.
+  - id: ads-txt
+    conforms: unknown
+    evidence: >-
+      The developer platform ships an "app-ads.txt" management view
+      (/#/abroad/doc/appadsTxt), so Domob participates in the IAB app-ads.txt
+      supply-chain scheme on behalf of its publishers. The view requires login,
+      and no ads.txt/app-ads.txt was served from a Domob host, so the extent of
+      conformance could not be verified.
+provider_claims:
+  - claim: >-
+      "In 2025 the Domob SDK passed CAICT dual-end (iOS/Android) security
+      certification" (中国信通院 移动应用安全检测 / SDK 安全认证).
+    kind: product-security certification
+    scope: mobile SDK, not the API
+    verified: false
+    note: >-
+      Carried forward from this profile's existing description. No certificate
+      number, issuing document or verification URL was found on a Domob host
+      during this pass, so it is recorded as an unverified provider claim and NO
+      `Compliance` pointer is emitted in apis.yml.
+compliance_program:
+  published: false
+  trust_center: false
+  certifications: []
+  detail: >-
+    No trust centre, no SOC 2 / ISO 27001 / PCI / HIPAA / FedRAMP page, and no
+    security or compliance section on any Domob site. Domob publishes a privacy
+    policy and a service agreement only.
+regulatory_context:
+  jurisdiction: China (PRC)
+  entity: 多盟智胜网络技术（北京）有限公司
+  icp:
+    - 京ICP证110535号
+    - 京ICP备10219500号
+  public_security_filing: 京公网安备110108400045号
+  note: >-
+    Chinese ICP licensing and public-security filing are legal operating
+    registrations, not API conformance. Recorded for context only.

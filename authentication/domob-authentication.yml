@@ -1,0 +1,104 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
+  (Media Data API, 2024-11-01) and
+  https://github.com/domob-inc/reporting_api/blob/master/reporting_api.md
+  (Reporting API for Publishers v1.0.3), cross-checked against a live
+  unauthenticated probe of https://developer.domob.cn/developer/api/get/stats
+docs: https://developer.domob.cn/#/doc/api
+summary: >-
+  Domob publishes no OAuth, no OpenID Connect and no token-exchange flow. Both
+  documented APIs authenticate with long-lived static credentials: the current
+  Media Data API sends the developer-platform account EMAIL AND PASSWORD in the
+  JSON request body on every call, and the legacy Reporting API sends a static
+  API token as a query-string parameter. Neither carries scopes, expiry, or a
+  documented rotation path.
+schemes:
+  - name: TokenHeader
+    api: domob-media-data-api
+    type: apiKey
+    in: header
+    parameter: Token
+    required: true
+    scoped: false
+    description: >-
+      Not a credential. The header value is base64(AES/CBC/PKCS7(slot_id +
+      end_dt + start_dt)) computed with a SHARED SYMMETRIC KEY that Domob prints
+      in the public PDF alongside a worked Golang implementation. Because the key
+      is published, any reader can mint a valid Token, so this header is an
+      integrity/format check rather than authentication.
+    source: Media Data API PDF, section 2 (加密请求)
+  - name: AccountCredentialsInBody
+    api: domob-media-data-api
+    type: credentials-in-body
+    in: body
+    parameter: user_info.username / user_info.password
+    required: true
+    scoped: false
+    description: >-
+      The developer-platform account email and password, transmitted in the JSON
+      request payload of every call. This is the only real credential on the API.
+      There is no API key, no token issuance step and no way to scope access to
+      reporting only — a leaked value is a full account takeover on the developer
+      platform.
+    source: Media Data API PDF, section 3 (请求参数 / userInfo)
+  - name: ApiTokenQueryParam
+    api: domob-reporting-api
+    type: apiKey
+    in: query
+    parameter: key
+    required: true
+    scoped: false
+    status: retired-host
+    description: >-
+      Static API token passed as the `key` query-string parameter on every
+      request. Query-string credentials are logged by proxies and servers by
+      default. The API's host (dvx.domob.cn) no longer resolves, so this scheme
+      is documented but not callable.
+    source: reporting_api.md, sections 1-3
+findings:
+  - id: credentials-in-request-body
+    severity: high
+    detail: >-
+      Account password is a request-payload field on the only live documented
+      API. There is no token layer between the reporting integration and the
+      developer-platform login.
+  - id: shared-signing-key-published
+    severity: high
+    detail: >-
+      The AES key used to build the `Token` header is printed verbatim in the
+      provider's own public PDF, so the header cannot authenticate a caller.
+      The key value is deliberately not reproduced in this repository.
+  - id: no-oauth-no-oidc
+    severity: medium
+    detail: >-
+      No oauth2 or openIdConnect scheme is documented on any Domob surface. No
+      /.well-known/openid-configuration or /.well-known/oauth-authorization-server
+      responded with a real document on any host (see well-known/domob-well-known.yml).
+  - id: no-scopes
+    severity: medium
+    detail: >-
+      No permission or scope model is published; access is all-or-nothing per
+      account. Consequently no scopes/ artifact is emitted.
+  - id: no-rotation-policy
+    severity: medium
+    detail: No credential rotation, expiry or revocation policy is documented.
+  - id: plaintext-http-in-legacy-docs
+    severity: medium
+    detail: >-
+      Every worked example in reporting_api.md uses http:// (not https://) against
+      dvx.domob.cn, sending the API token in cleartext.
+gated_surfaces:
+  - host: adx.domob.cn
+    status: 401
+    note: >-
+      The Domob ADX endpoint answers HTTP 401 to an anonymous request. Its
+      docking document is on a Feishu wiki that redirects to a BlueFocus SSO
+      login, so its auth scheme could not be read.
+  - host: open.domob.cn
+    status: 200
+    note: >-
+      Self-identifies as "Domob Open API" and returns structured error envelopes
+      ({"error_code":"10103"}), but publishes no discoverable documentation, so
+      no auth scheme could be established.

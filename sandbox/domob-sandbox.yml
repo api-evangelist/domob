@@ -1,0 +1,71 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://dev.domob.cn/help/techdocument.htm (Android and iOS SDK integration
+  guides) and the Domob developer platform SDK test-device page
+  (https://developer.domob.cn/#/doc/sdkTest)
+docs: https://dev.domob.cn/help/techdocument.htm
+summary: >-
+  Domob publishes NO API sandbox — there is no test host, no test mode and no
+  test credential for the Media Data API or the ADX. What it does publish is an
+  SDK-side test path: public test Publisher IDs that always serve test ads, and
+  a device allow-list in the developer platform for putting a real ad slot into
+  test mode on a named device.
+api_sandbox:
+  available: false
+  test_host: null
+  test_key_prefix: null
+  detail: >-
+    The only live documented API takes production account credentials and reads
+    production reporting data. There is no way to exercise it without a real
+    Domob publisher account, and no documented read-only or dry-run mode.
+sdk_test_mode:
+  available: true
+  mechanism: public test Publisher ID
+  detail: >-
+    Domob publishes shared test Publisher IDs in its integration guides. An app
+    using one of these always renders test ads regardless of review status, so an
+    integrator can verify rendering before an application is approved. Domob also
+    notes that a real Publisher ID serves only test ads until the app passes
+    review — the review gate, not a separate environment, is what separates test
+    from live traffic.
+  published_test_ids:
+    - platform: android
+      value: 56OJyM1ouMGoaSnvCK
+      source: >-
+        https://dev.domob.cn/help/techdocument.htm — "Android 公共测试Publisher ID"
+    - platform: ios
+      value: 56OJyM1ouMGoULfJaL
+      source: >-
+        https://dev.domob.cn/help/techdocument.htm — used as the test Publisher ID
+        in every iOS code sample (DMAdView, DMInterstitialAdController,
+        DMSplashAdController, DMTools)
+  note: >-
+    Values recorded verbatim as published by Domob in its public integration
+    guide. They are shared, non-secret demo identifiers, not credentials.
+test_devices:
+  available: true
+  where: Domob developer platform -> SDK对接 -> sdkTest
+  mechanism: >-
+    Register a device by area, OS (Android/iOS) and device identifier
+    (device_id + device_type), then toggle test_status per device. Requires a
+    logged-in developer account, so the allow-list itself could not be read.
+  fields_observed: [area, os, device_id, device_type, test_status]
+  source: >-
+    developer.domob.cn SPA bundle chunk-8de45c8c (the sdkTest view), read
+    anonymously 2026-08-12
+test_clocks: false
+fixtures: false
+triggers: false
+test_cards: false
+findings:
+  - id: no-api-sandbox
+    severity: medium
+    detail: >-
+      An integrator cannot try the reporting API at all without production
+      publisher credentials, and those credentials are the account password.
+  - id: test-ids-are-published-plaintext
+    severity: low
+    detail: >-
+      Shared public test Publisher IDs are intentionally published by Domob; they
+      are demo identifiers by design, not leaked secrets.

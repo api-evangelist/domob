@@ -1,0 +1,60 @@
+generated: '2026-08-12'
+method: searched
+source: >-
+  https://www.domob.cn/ (service pages for DSP, UGdesk, BidMaster, BlueNova),
+  https://www.domob.cn/aboutUs/contact, https://dev.domob.cn/help/rule.htm
+  (服务协议 / service agreement) and the Domob developer platform — searched for
+  pricing, 价格, 费用, 套餐 and 计费 on 2026-08-12
+docs: https://dev.domob.cn/help/rule.htm
+plan_count: 0
+plans: []
+model: revenue-share (publishers) + contact-sales (advertisers)
+summary: >-
+  Domob publishes no plans, no tiers, no rate card and no self-serve pricing on
+  any surface. It is a two-sided ad platform: advertisers engage through sales
+  ("联系我们"), and publishers are paid rather than charged. The only pricing
+  language Domob publishes is settlement terms in its service agreement, which
+  describe HOW publishers are paid, not what anything costs.
+settlement_terms:
+  basis: >-
+    Settlement is per "有效行为单位数量" (effective action units): each effective
+    action a partner site generates is settled at that campaign's effective
+    action unit price. The commission ratio is whatever Domob publishes on the
+    platform at the time — it is explicitly not fixed in the agreement.
+  currency: CNY
+  reporting: >-
+    Domob generates delivery reports in the platform; publisher income is derived
+    from the report figures times the unit price.
+  minimum_payout: >-
+    A minimum balance threshold applies before withdrawal is possible. The
+    threshold VALUE is not published.
+  payout_schedule: >-
+    Withdrawal requests submitted between the 1st and 23rd of a month are
+    processed within that month; requests after the 23rd are paid at the start of
+    the following month and counted as the following month's income.
+  invoicing:
+    company_accounts: >-
+      Must supply a VAT invoice (增值税专用发票 or 增值税普通发票) stamped with the
+      company's invoice seal before payment is released. Invoice title:
+      多盟智胜网络技术（北京）有限公司.
+    individual_accounts: >-
+      Domob withholds Chinese individual income tax on behalf of individual
+      developers, at published bands (monthly income under 800 CNY: 0;
+      800-4,000: (income-800)*20%; 4,000-25,000: (income-income*20%)*20%;
+      25,000-62,500: (income-income*20%)*30%-2,000; above 62,500:
+      (income-income*20%)*40%-7,000).
+  authority: >-
+    The agreement states the electronic statement is for reference only and the
+    binding settlement is the stamped statement issued by
+    多盟智胜网络技术（北京）有限公司 — i.e. the reporting API's numbers are explicitly
+    NOT the settlement numbers.
+  source: https://dev.domob.cn/help/rule.htm
+api_pricing:
+  charged: false
+  detail: >-
+    Neither the Media Data API nor the ADX has any documented price, quota tier
+    or metered charge. API access is a feature of a publisher/partner account,
+    not a product with a price.
+note: >-
+  plan_count: 0 is the finding, not a gap in the search. Domob is an enterprise
+  ad-sales business with no self-serve product to price.

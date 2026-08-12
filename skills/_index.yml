@@ -1,0 +1,32 @@
+generated: '2026-08-12'
+method: generated
+source: >-
+  openapi/domob-media-data-api-openapi.yml plus the derived conventions, errors,
+  authentication, sandbox and plans artifacts in this repository
+note: >-
+  Domob publishes no skills, no AGENTS.md and no llms.txt (searched 2026-08-12 —
+  every /llms.txt probe returned a 404 or a soft-200 shell). One skill is
+  packaged here, because Domob's entire public API contract is one operation.
+  Every operationId referenced below exists in the OpenAPI in this repository.
+skills:
+  - name: domob-media-revenue-report
+    file: domob-media-revenue-report.md
+    api: domob-media-data-api
+    operations:
+      - getMediaStats
+    description: >-
+      Pull Domob publisher media statistics for a day or a date range, with the
+      envelope-only error handling, unsigned-token caveat, CNY currency and
+      not-for-settlement framing the API requires.
+not_packaged:
+  - surface: domob-adx
+    reason: >-
+      Docking document is behind a BlueFocus Feishu SSO login; no operation names
+      are readable, so a skill would have to be invented.
+  - surface: domob-open-api
+    reason: >-
+      https://open.domob.cn is live but publishes no operation list.
+  - surface: domob-reporting-api
+    reason: >-
+      Documented (v1.0.3) but its host dvx.domob.cn is NXDOMAIN. A skill for a
+      dead host would teach an agent to call something that does not answer.

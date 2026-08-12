@@ -23,11 +23,17 @@ description: >-
   and Xiaohongshu. For developers and app publishers, Domob distributes
   first-party iOS and Android ad SDKs (banner, interstitial, splash, native and
   offerwall formats) plus Unity3D and Cocos2d-x game-engine plugins via its
-  Domob-SDK GitHub organization; publishers obtain a Publisher ID and Placement
-  ID from the Domob platform to monetize apps. In 2025 the Domob SDK passed
-  CAICT dual-end (iOS/Android) security certification. This profile was surfaced
-  as a portfolio company of Qiming Venture Partners and enriched from public
-  sources.
+  Domob-SDK and domob-inc GitHub accounts; publishers obtain a Publisher ID and
+  Placement ID from the Domob platform to monetize apps. Its public API surface
+  is narrow: one documented and live publisher reporting operation (the Media
+  Data API on developer.domob.cn), an ad exchange at adx.domob.cn whose docking
+  document sits behind a BlueFocus Feishu login, an undocumented "Domob Open
+  API" gateway at open.domob.cn, and a retired Reporting API whose
+  documentation is still published even though its host no longer resolves. No
+  machine-readable specification is published on any host. In 2025 the Domob SDK
+  passed CAICT dual-end (iOS/Android) security certification. This profile was
+  surfaced as a portfolio company of Qiming Venture Partners and enriched from
+  public sources.
 url: https://raw.githubusercontent.com/api-evangelist/domob/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -37,7 +43,7 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-18'
+modified: '2026-08-12'
 tags:
 - Company
 - Advertising
@@ -47,7 +53,54 @@ tags:
 - SDK
 - DSP
 - Monetization
-apis: []
+- Reporting
+- China
+apis:
+- name: Domob Media Data API
+  description: >-
+    Publisher-facing reporting API for the Domob mobile advertising platform.
+    A single POST operation returns delivery and revenue statistics — ad
+    requests, bids, impressions, clicks, CPM and media billing — for a
+    developer account's ad slots, at hour-level granularity for a single day or
+    day-level granularity across a range. Documented only as a Chinese-language
+    PDF (revision 2024-11-01) linked from the developer platform's API docking
+    page; no machine-readable contract is published. Authentication is the
+    developer-platform account email and password carried in the JSON request
+    body, alongside a `Token` header derived with an AES key that Domob prints
+    in that same public document. Every outcome, success or failure, is returned
+    as HTTP 200 with the result in a body `code` field. Verified live 2026-08-12.
+  humanURL: https://developer.domob.cn/#/doc/api
+  baseURL: https://developer.domob.cn
+  tags:
+  - Reporting
+  - Advertising
+  - Monetization
+  properties:
+  - type: OpenAPI
+    url: openapi/domob-media-data-api-openapi.yml
+  - type: Overlay
+    url: overlays/domob-media-data-api-overlay.yaml
+  - type: Documentation
+    url: https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
+  - type: APIReference
+    url: https://developer.domob.cn/#/doc/api
+- name: Domob ADX
+  description: >-
+    Domob's mobile ad exchange, supporting RTB, PMP, PD and PDB buying. Listed
+    on the Domob developer platform's API docking page with a docking document
+    updated 2025-06-13, but that document is hosted on a BlueFocus Feishu wiki
+    that redirects to an SSO login, so the contract could not be read. The
+    exchange host answers HTTP 401 to an anonymous request, confirming the
+    surface is live and gated rather than absent.
+  humanURL: https://developer.domob.cn/#/doc/api
+  baseURL: https://adx.domob.cn
+  tags:
+  - Advertising
+  - RTB
+  - Exchange
+  properties:
+  - type: Documentation
+    url: https://bluefocus.feishu.cn/wiki/UWpJwOTk6iVflBkvr2JcRjUUnxe
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -56,18 +109,66 @@ maintainers:
 common:
 - type: Website
   url: https://www.domob.cn
+- type: DeveloperPortal
+  url: https://developer.domob.cn/
+- type: Documentation
+  url: https://dev.domob.cn/help/techdocument.htm
+- type: APIReference
+  url: https://developer.domob.cn/#/doc/api
+- type: GettingStarted
+  url: https://dev.domob.cn/help/index.htm?t=tab0
+- type: Support
+  url: https://www.domob.cn/aboutUs/contact
+- type: Blog
+  url: https://www.domob.cn/blog
+- type: SignUp
+  url: https://developer.domob.cn/#/signup
+- type: Login
+  url: https://developer.domob.cn/#/login
 - type: GitHubOrganization
   url: https://github.com/Domob-SDK
+- type: SourceCode
+  url: https://github.com/domob-inc
+- type: TermsOfService
+  url: https://dev.domob.cn/help/rule.htm
 - type: PrivacyPolicy
   url: https://www.domob.cn/article?id=advertiserPlatformPrivacyPolicy
 - type: Packages
   url: packages/domob-packages.yml
 - type: SDKs
   url: packages/domob-packages.yml
+- type: Authentication
+  url: authentication/domob-authentication.yml
+- type: ErrorCatalog
+  url: errors/domob-problem-types.yml
+- type: Conventions
+  url: conventions/domob-conventions.yml
+- type: DataModel
+  url: data-model/domob-data-model.yml
+- type: Lifecycle
+  url: lifecycle/domob-lifecycle.yml
+- type: ChangeLog
+  url: changelog/domob-changelog.yml
+- type: Sandbox
+  url: sandbox/domob-sandbox.yml
+- type: Plans
+  url: plans/domob-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/domob-rate-limits.yml
+- type: Conformance
+  url: conformance/domob-conformance.yml
+- type: LLMsTxt
+  url: llms/domob-llms.txt
+- type: MCPServer
+  url: mcp/domob-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/domob-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
 - type: DomainSecurity
   url: security/domob-domain-security.yml
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 18
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence

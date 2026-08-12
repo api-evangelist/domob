@@ -1,12 +1,18 @@
-generated: '2026-07-18'
+generated: '2026-08-12'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
-- host: domob.cn
+- host: www.domob.cn
   https: true
-  tls_cert_error: '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch,
-    certificate is not valid for ''domob.cn''. '
-  hsts: null
+  tls_version: TLSv1.2
+  cert_expires: Oct 12 05:23:23 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: developer.domob.cn
+  https: true
+  tls_version: TLSv1.2
+  cert_expires: Oct 12 05:23:23 2026 GMT
+  hsts: false
 domains:
 - domain: domob.cn
   dnssec: false

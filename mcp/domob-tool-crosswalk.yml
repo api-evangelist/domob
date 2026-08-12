@@ -1,0 +1,62 @@
+generated: '2026-08-12'
+method: derived
+source: >-
+  mcp/domob-mcp.yml (candidate tool list) bound to
+  openapi/domob-media-data-api-openapi.yml
+summary: >-
+  A one-to-one crosswalk, because Domob's entire public API contract is a single
+  operation. There is no first-party MCP server and no GraphQL surface, so the
+  MCP side of this table is a candidate derived from the OpenAPI, and every tool
+  inherits its real inputSchema from that operation's requestBody.
+surfaces:
+  openapi:
+    path: openapi/domob-media-data-api-openapi.yml
+    operations: 1
+    gated: false
+    note: >-
+      Transcribed by API Evangelist from Domob's published PDF; Domob publishes
+      no machine-readable contract.
+  graphql:
+    endpoint: null
+    gated: null
+    note: No GraphQL surface exists on any Domob host.
+  mcp:
+    url: null
+    gated: null
+    note: No MCP server is published. Tools below are candidates.
+crosswalk:
+  - tool: get_media_stats
+    category: reporting
+    rest:
+      - getMediaStats
+    binding: direct
+    confidence: high
+    note: >-
+      One-to-one. The tool's inputSchema is the flattened union of the
+      operation's UserInfo and ExportInfo request-body objects; no parameter is
+      invented.
+mcp_only: []
+rest_only: []
+undocumented_surfaces:
+  - surface: https://open.domob.cn
+    kind: rest-gateway
+    note: >-
+      Live and self-identified as "Domob Open API", but publishes no operation
+      list, so nothing can be crosswalked to it. Recorded so a later run does not
+      mistake this table's completeness for Domob's.
+  - surface: https://adx.domob.cn
+    kind: ad-exchange
+    status: 401
+    note: >-
+      Live but anonymous-gated; its docking document is behind a BlueFocus Feishu
+      login, so its operations are unknown.
+coverage:
+  openapi_operations: 1
+  tools: 1
+  mapped: 1
+  mcp_only: 0
+  rest_only: 0
+  operation_coverage_pct: 100
+  note: >-
+    100% coverage of a one-operation contract. The number describes how small
+    Domob's published surface is, not how complete its agent tooling is.
