@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Domob Media Data API",
+    "version": "2024-11-01"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reporting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve media statistics for a date or date range",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://developer.domob.cn/developer/api/get/stats",
+            "headers": [
+              {
+                "name": "Token",
+                "value": "REDACTED_EXAMPLE_TOKEN"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Token",
+              "value": "{{Token}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns delivery and revenue statistics for the authenticated developer\naccount, optionally narrowed to a single ad slot.\n\nTime granularity is inferred from the range, not requested explicitly:\n\n* `start_dt == end_dt` — returns HOUR-level rows for that day (`day_type: hr`).\n* `start_dt < end_dt` — returns DAY-level rows across the range (`day_type: dt`).\n\nBoth credentials (in the body) and the `Token` header are required.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

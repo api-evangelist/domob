@@ -3,72 +3,72 @@ method: derived
 source: openapi/domob-media-data-api-openapi.yml
 status: candidate
 official_server: null
-summary: >-
-  Domob publishes NO MCP server. Searched the developer platform, the marketing
-  site, both GitHub accounts (Domob-SDK, domob-inc) and npm on 2026-08-12 —
-  nothing. No /mcp, /sse or /message endpoint was found on any Domob host, and
-  the /.well-known probes that would carry an OAuth challenge all missed
+summary: 'Domob publishes NO MCP server. Searched the developer platform, the marketing site, both GitHub
+  accounts (Domob-SDK, domob-inc) and npm on 2026-08-12 — nothing. No /mcp, /sse or /message endpoint
+  was found on any Domob host, and the /.well-known probes that would carry an OAuth challenge all missed
   (see well-known/domob-well-known.yml).
 
-  The tool list below is a CANDIDATE derived from the single documented
-  operation in Domob's published Media Data API. It is what an MCP server over
-  Domob's public contract could expose today; it is not something Domob ships.
+  The tool list below is a CANDIDATE derived from the single documented operation in Domob''s published
+  Media Data API. It is what an MCP server over Domob''s public contract could expose today; it is not
+  something Domob ships.'
 search:
   performed: '2026-08-12'
   surfaces_checked:
-    - https://developer.domob.cn/ (developer platform SPA route table)
-    - https://www.domob.cn/
-    - https://github.com/Domob-SDK
-    - https://github.com/domob-inc
-    - registry.npmjs.org (text search "domob", "domob mcp")
+  - https://developer.domob.cn/ (developer platform SPA route table)
+  - https://www.domob.cn/
+  - https://github.com/Domob-SDK
+  - https://github.com/domob-inc
+  - registry.npmjs.org (text search "domob", "domob mcp")
   result: no first-party MCP server found
 endpoints_probed:
-  - url: https://open.domob.cn/mcp
-    status: 404
-    note: '{"error_code":"10103","error_description":"request api not found"}'
+- url: https://open.domob.cn/mcp
+  status: 404
+  note: '{"error_code":"10103","error_description":"request api not found"}'
 tools:
-  - name: get_media_stats
-    status: candidate
-    rest: getMediaStats
-    description: >-
-      Retrieve Domob media delivery and revenue statistics for a date or date
-      range, optionally filtered to one ad slot. Returns requests, bids,
-      impressions, clicks, CPM and media revenue per ad slot.
-    inputSchema:
-      type: object
-      required: [username, password, start_dt, end_dt]
-      properties:
-        username:
-          type: string
-          description: Domob developer-platform account email.
-        password:
-          type: string
-          description: >-
-            Domob developer-platform account password. NOTE — Domob's API has no
-            token layer, so any MCP server over it would have to hold a full
-            account password. See authentication/domob-authentication.yml.
-        slot_id:
-          type: string
-          description: Optional ad slot filter; empty means all slots.
-        start_dt:
-          type: integer
-          description: Start date as YYYYMMDD.
-        end_dt:
-          type: integer
-          description: >-
-            End date as YYYYMMDD. Equal to start_dt returns hour-level rows;
-            greater returns day-level rows.
-    annotations:
-      readOnlyHint: true
-      destructiveHint: false
-      idempotentHint: true
+- name: get_media_stats
+  status: candidate
+  rest: getMediaStats
+  description: Retrieve Domob media delivery and revenue statistics for a date or date range, optionally
+    filtered to one ad slot. Returns requests, bids, impressions, clicks, CPM and media revenue per ad
+    slot.
+  inputSchema:
+    type: object
+    required:
+    - username
+    - password
+    - start_dt
+    - end_dt
+    properties:
+      username:
+        type: string
+        description: Domob developer-platform account email.
+      password:
+        type: string
+        description: Domob developer-platform account password. NOTE — Domob's API has no token layer,
+          so any MCP server over it would have to hold a full account password. See authentication/domob-authentication.yml.
+      slot_id:
+        type: string
+        description: Optional ad slot filter; empty means all slots.
+      start_dt:
+        type: integer
+        description: Start date as YYYYMMDD.
+      end_dt:
+        type: integer
+        description: End date as YYYYMMDD. Equal to start_dt returns hour-level rows; greater returns
+          day-level rows.
+  annotations:
+    readOnlyHint: true
+    destructiveHint: false
+    idempotentHint: true
 agent_readiness_notes:
-  - >-
-    A tool over this API cannot report failure through transport semantics: every
-    outcome is HTTP 200 and the body `code` is the only signal, so an MCP wrapper
-    must translate `code != 0` into an MCP error itself.
-  - >-
-    There is no scoped credential to hand an agent. Wrapping this API means
-    giving the agent a reusable developer-platform password.
-  - >-
-    No rate-limit header exists, so an agent has no back-pressure signal.
+- 'A tool over this API cannot report failure through transport semantics: every outcome is HTTP 200 and
+  the body `code` is the only signal, so an MCP wrapper must translate `code != 0` into an MCP error itself.'
+- There is no scoped credential to hand an agent. Wrapping this API means giving the agent a reusable
+  developer-platform password.
+- No rate-limit header exists, so an agent has no back-pressure signal.
+deployment:
+  mode: none
+  verified: derived
+  tools: 1
+  checked: '2026-08-12'
+  source: catalog MCP census

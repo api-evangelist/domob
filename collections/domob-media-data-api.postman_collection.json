@@ -1,0 +1,165 @@
+{
+  "item": [
+    {
+      "id": "3a06bde2-910c-4193-a7f2-8ebb6bf0de3d",
+      "name": "Reporting",
+      "description": {
+        "content": "Media revenue and delivery statistics for a publisher's ad slots.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3ba1b9e0-9b0c-43af-b42c-f36a4a1a55c5",
+          "name": "Retrieve media statistics for a date or date range",
+          "request": {
+            "name": "Retrieve media statistics for a date or date range",
+            "description": {
+              "content": "Returns delivery and revenue statistics for the authenticated developer\naccount, optionally narrowed to a single ad slot.\n\nTime granularity is inferred from the range, not requested explicitly:\n\n* `start_dt == end_dt` — returns HOUR-level rows for that day (`day_type: hr`).\n* `start_dt < end_dt` — returns DAY-level rows across the range (`day_type: dt`).\n\nBoth credentials (in the body) and the `Token` header are required.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "developer",
+                "api",
+                "get",
+                "stats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Base64 of the AES/CBC/PKCS7 ciphertext of the concatenation `slot_id + end_dt + start_dt` (fixed order), encrypted with the shared key published in the provider's document. Not a per-account secret.",
+                "key": "Token",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_info\": {\n    \"username\": \"<string>\",\n    \"password\": \"<password>\"\n  },\n  \"export_info\": {\n    \"start_dt\": \"<integer>\",\n    \"end_dt\": \"<integer>\",\n    \"slot_id\": \"\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "848fb2d1-a66e-4ba9-9ee1-5980f39f1a87",
+              "name": "Always HTTP 200. Success and failure are both signalled in the response body via `code` (0 = OK) and `msg`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "developer",
+                    "api",
+                    "get",
+                    "stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Base64 of the AES/CBC/PKCS7 ciphertext of the concatenation `slot_id + end_dt + start_dt` (fixed order), encrypted with the shared key published in the provider's document. Not a per-account secret.",
+                    "key": "Token",
+                    "value": "REDACTED_EXAMPLE_TOKEN"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_info\": {\n    \"username\": \"test@domob.cn\",\n    \"password\": \"string\"\n  },\n  \"export_info\": {\n    \"start_dt\": 20241029,\n    \"end_dt\": 20241030,\n    \"slot_id\": \"1234\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 0,\n  \"data\": {\n    \"dim\": [\n      {\n        \"label\": \"day_type\",\n        \"name\": \"string\"\n      },\n      {\n        \"label\": \"day_type\",\n        \"name\": \"string\"\n      }\n    ],\n    \"data\": [\n      {\n        \"day_type\": \"dt\",\n        \"summary\": \"20241030\",\n        \"name\": \"string\",\n        \"media_ad_slot\": \"1234\",\n        \"req\": 5744,\n        \"bid\": 2546,\n        \"imp\": 4368,\n        \"clk\": 8387,\n        \"cpm_price\": 6598.788052672089,\n        \"media_price\": 9502.611124967092,\n        \"application_id\": 4331\n      },\n      {\n        \"day_type\": \"dt\",\n        \"summary\": \"20241030\",\n        \"name\": \"string\",\n        \"media_ad_slot\": \"1234\",\n        \"req\": 7675,\n        \"bid\": 621,\n        \"imp\": 2096,\n        \"clk\": 9375,\n        \"cpm_price\": 9995.350770754176,\n        \"media_price\": 2274.733849873913,\n        \"application_id\": 4331\n      }\n    ]\n  },\n  \"msg\": \"OK\",\n  \"sysTime\": 1730364646\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://developer.domob.cn",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b7543139-ee50-42e2-b6ee-c6d3101bfc8a",
+    "name": "Domob Media Data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Faithful OpenAPI transcription of Domob's published document\n\"媒体数据API接口（新-20241101）\" (Media Data API Interface, revision 2024-11-01),\nlinked from the API docking page of the Domob developer platform\n(https://developer.domob.cn/#/doc/api) and distributed as a PDF from\nDomob's own CDN.\n\nProvenance / ownership: the document is served from\nhttps://landing.domobcdn.com/2022/adxFile/ (Domob's CDN, domobcdn.com),\nis linked from Domob's own developer platform, and the single operation it\ndocuments is hosted at https://developer.domob.cn — a Domob-controlled host.\nThe endpoint was verified live on 2026-08-12: an unauthenticated\n`POST /developer/api/get/stats` with an empty JSON body returned HTTP 200\nwith the documented envelope\n`{\"code\":1,\"data\":{},\"msg\":\"邮箱或密码信息为空\",\"sysTime\":...}`\n(\"email or password information is empty\"), matching the documented\nresponse shape exactly.\n\nNOT SAVED VERBATIM: Domob does not publish a machine-readable contract.\nThis file was generated from the provider's own published PDF; it is a\ntranscription, not a harvested spec. No path, parameter, field or response\nbelow appears that is not stated in that document.\n\nSECURITY NOTE: the published document prints the symmetric AES key used to\nbuild the `Token` request header directly in the PDF, alongside a worked\nGolang example. A statically published shared key means the `Token` header\nis not a secret and provides no authentication value on its own — the\naccount credentials in the request body are the only real credential. The\nkey value itself is deliberately NOT reproduced in this repository.\n\n\nContact Support:\n Name: Domob Developer Support\n Email: support@domob.cn",
+      "type": "text/plain"
+    }
+  }
+}
