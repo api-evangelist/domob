@@ -56,42 +56,13 @@ tags:
 - Reporting
 - China
 apis:
-- name: Domob Media Data API
-  description: >-
-    Publisher-facing reporting API for the Domob mobile advertising platform.
-    A single POST operation returns delivery and revenue statistics — ad
-    requests, bids, impressions, clicks, CPM and media billing — for a
-    developer account's ad slots, at hour-level granularity for a single day or
-    day-level granularity across a range. Documented only as a Chinese-language
-    PDF (revision 2024-11-01) linked from the developer platform's API docking
-    page; no machine-readable contract is published. Authentication is the
-    developer-platform account email and password carried in the JSON request
-    body, alongside a `Token` header derived with an AES key that Domob prints
-    in that same public document. Every outcome, success or failure, is returned
-    as HTTP 200 with the result in a body `code` field. Verified live 2026-08-12.
-  humanURL: https://developer.domob.cn/#/doc/api
-  baseURL: https://developer.domob.cn
-  tags:
-  - Reporting
-  - Advertising
-  - Monetization
-  properties:
-  - type: OpenAPI
-    url: openapi/domob-media-data-api-openapi.yml
-  - type: Overlay
-    url: overlays/domob-media-data-api-overlay.yaml
-  - type: Documentation
-    url: https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
-  - type: APIReference
-    url: https://developer.domob.cn/#/doc/api
 - name: Domob ADX
   description: >-
-    Domob's mobile ad exchange, supporting RTB, PMP, PD and PDB buying. Listed
-    on the Domob developer platform's API docking page with a docking document
-    updated 2025-06-13, but that document is hosted on a BlueFocus Feishu wiki
-    that redirects to an SSO login, so the contract could not be read. The
-    exchange host answers HTTP 401 to an anonymous request, confirming the
-    surface is live and gated rather than absent.
+    Domob's mobile ad exchange, supporting RTB, PMP, PD and PDB buying. Listed on the Domob developer
+    platform's API docking page with a docking document updated 2025-06-13, but that document is hosted
+    on a BlueFocus Feishu wiki that redirects to an SSO login, so the contract could not be read. The
+    exchange host answers HTTP 401 to an anonymous request, confirming the surface is live and gated rather
+    than absent.
   humanURL: https://developer.domob.cn/#/doc/api
   baseURL: https://adx.domob.cn
   tags:
@@ -101,12 +72,29 @@ apis:
   properties:
   - type: Documentation
     url: https://bluefocus.feishu.cn/wiki/UWpJwOTk6iVflBkvr2JcRjUUnxe
+- aid: domob:domob-reporting-api
+  name: domob Reporting API
+  description: Media revenue and delivery statistics for a publisher's ad slots.
+  humanURL: https://developer.domob.cn/#/doc/api
+  baseURL: https://developer.domob.cn
+  tags:
+  - Reporting
+  properties:
+  - type: OpenAPI
+    url: openapi/domob-reporting-api-openapi.yml
+  - type: Documentation
+    url: >-
+      https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
+  - type: APIReference
+    url: https://developer.domob.cn/#/doc/api
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/domob-media-data-api-overlay.yaml
 - type: Website
   url: https://www.domob.cn
 - type: DeveloperPortal
