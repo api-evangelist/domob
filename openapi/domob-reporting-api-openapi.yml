@@ -1,0 +1,297 @@
+openapi: 3.2.0
+info:
+  title: Domob Media Data Reporting API
+  version: 2024-11-01
+  summary: Publisher-facing reporting API for the Domob (多盟) mobile advertising platform. Returns day-level or hour-level media statistics (requests, bids, impressions, clicks, CPM and media revenue) for a developer account's ad slots.
+  description: 'Faithful OpenAPI transcription of Domob''s published document
+
+    "媒体数据API接口（新-20241101）" (Media Data API Interface, revision 2024-11-01),
+
+    linked from the API docking page of the Domob developer platform
+
+    (https://developer.domob.cn/#/doc/api) and distributed as a PDF from
+
+    Domob''s own CDN.
+
+
+    Provenance / ownership: the document is served from
+
+    https://landing.domobcdn.com/2022/adxFile/ (Domob''s CDN, domobcdn.com),
+
+    is linked from Domob''s own developer platform, and the single operation it
+
+    documents is hosted at https://developer.domob.cn — a Domob-controlled host.
+
+    The endpoint was verified live on 2026-08-12: an unauthenticated
+
+    `POST /developer/api/get/stats` with an empty JSON body returned HTTP 200
+
+    with the documented envelope
+
+    `{"code":1,"data":{},"msg":"邮箱或密码信息为空","sysTime":...}`
+
+    ("email or password information is empty"), matching the documented
+
+    response shape exactly.
+
+
+    NOT SAVED VERBATIM: Domob does not publish a machine-readable contract.
+
+    This file was generated from the provider''s own published PDF; it is a
+
+    transcription, not a harvested spec. No path, parameter, field or response
+
+    below appears that is not stated in that document.
+
+
+    SECURITY NOTE: the published document prints the symmetric AES key used to
+
+    build the `Token` request header directly in the PDF, alongside a worked
+
+    Golang example. A statically published shared key means the `Token` header
+
+    is not a secret and provides no authentication value on its own — the
+
+    account credentials in the request body are the only real credential. The
+
+    key value itself is deliberately NOT reproduced in this repository.
+
+    '
+  contact:
+    name: Domob Developer Support
+    email: support@domob.cn
+    url: https://developer.domob.cn/
+  termsOfService: https://dev.domob.cn/help/rule.htm
+  x-source-document: https://landing.domobcdn.com/2022/adxFile/%E5%AA%92%E4%BD%93%E6%95%B0%E6%8D%AEAPI%E6%8E%A5%E5%8F%A3.pdf
+  x-source-document-updated: '2024-11-01'
+  x-generated-by: api-evangelist enrichment pipeline (local-v1)
+  x-generated: '2026-08-12'
+servers:
+- url: https://developer.domob.cn
+  description: Domob developer platform (production; the only host named in the document)
+tags:
+- name: Reporting
+  description: Media revenue and delivery statistics for a publisher's ad slots.
+paths:
+  /developer/api/get/stats:
+    post:
+      operationId: getMediaStats
+      tags:
+      - Reporting
+      summary: Retrieve media statistics for a date or date range
+      description: 'Returns delivery and revenue statistics for the authenticated developer
+
+        account, optionally narrowed to a single ad slot.
+
+
+        Time granularity is inferred from the range, not requested explicitly:
+
+
+        * `start_dt == end_dt` — returns HOUR-level rows for that day (`day_type: hr`).
+
+        * `start_dt < end_dt` — returns DAY-level rows across the range (`day_type: dt`).
+
+
+        Both credentials (in the body) and the `Token` header are required.
+
+        '
+      security:
+      - TokenHeader: []
+      parameters:
+      - name: Token
+        in: header
+        required: true
+        description: Base64 of the AES/CBC/PKCS7 ciphertext of the concatenation `slot_id + end_dt + start_dt` (fixed order), encrypted with the shared key published in the provider's document. Not a per-account secret.
+        schema:
+          type: string
+        example: REDACTED_EXAMPLE_TOKEN
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatsRequest'
+      responses:
+        '200':
+          description: Always HTTP 200. Success and failure are both signalled in the response body via `code` (0 = OK) and `msg`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+components:
+  schemas:
+    StatsResponse:
+      type: object
+      required:
+      - code
+      - data
+      - msg
+      - sysTime
+      properties:
+        code:
+          type: integer
+          description: Response status code. `0` indicates success.
+          examples:
+          - 0
+        data:
+          $ref: '#/components/schemas/StatsData'
+        msg:
+          type: string
+          description: Response status marker.
+          examples:
+          - OK
+        sysTime:
+          type: integer
+          description: Response timestamp (Unix seconds).
+          examples:
+          - 1730364646
+    StatsData:
+      type: object
+      required:
+      - dim
+      - data
+      properties:
+        dim:
+          type: array
+          description: Column dictionary — maps each returned field to its display name.
+          items:
+            $ref: '#/components/schemas/Dimension'
+        data:
+          type: array
+          description: The statistics rows.
+          items:
+            $ref: '#/components/schemas/StatsRow'
+    StatsRequest:
+      type: object
+      required:
+      - user_info
+      - export_info
+      properties:
+        user_info:
+          $ref: '#/components/schemas/UserInfo'
+        export_info:
+          $ref: '#/components/schemas/ExportInfo'
+    Dimension:
+      type: object
+      required:
+      - label
+      - name
+      properties:
+        label:
+          type: string
+          description: Field key as it appears in each stats row.
+          examples:
+          - day_type
+        name:
+          type: string
+          description: Human-readable (Chinese) name of the field.
+    UserInfo:
+      type: object
+      description: Developer-platform account credentials, sent in the request body.
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+          description: Email address the developer-platform account was created with.
+          examples:
+          - test@domob.cn
+        password:
+          type: string
+          format: password
+          description: Password for that developer-platform account.
+    StatsRow:
+      type: object
+      required:
+      - day_type
+      - summary
+      - name
+      - media_ad_slot
+      - req
+      - bid
+      - imp
+      - clk
+      - cpm_price
+      - media_price
+      - application_id
+      properties:
+        day_type:
+          type: string
+          description: 'Time granularity of the row: `dt` = daily, `hr` = hourly.'
+          enum:
+          - dt
+          - hr
+          examples:
+          - dt
+        summary:
+          type: string
+          description: The time bucket (YYYYMMDD for daily rows).
+          examples:
+          - '20241030'
+        name:
+          type: string
+          description: Exchange (交易所) name.
+        media_ad_slot:
+          type: string
+          description: Ad slot identifier.
+          examples:
+          - '1234'
+        req:
+          type: integer
+          format: int64
+          description: Ad request count.
+        bid:
+          type: integer
+          format: int64
+          description: Bid count.
+        imp:
+          type: integer
+          format: int64
+          description: Impression count.
+        clk:
+          type: integer
+          format: int64
+          description: Click count.
+        cpm_price:
+          type: number
+          format: double
+          description: CPM, in CNY (元).
+        media_price:
+          type: number
+          format: double
+          description: Media/publisher billing amount, in CNY (元).
+        application_id:
+          type: integer
+          description: Application ID.
+          examples:
+          - 4331
+    ExportInfo:
+      type: object
+      description: Query window and optional ad-slot filter.
+      required:
+      - start_dt
+      - end_dt
+      properties:
+        slot_id:
+          type: string
+          description: Ad slot (广告位) ID. Optional; empty string means all slots.
+          default: ''
+          examples:
+          - '1234'
+        start_dt:
+          type: integer
+          description: Start date as an integer in YYYYMMDD form. Defaults to the previous day.
+          examples:
+          - 20241029
+        end_dt:
+          type: integer
+          description: End date as an integer in YYYYMMDD form. Defaults to the previous day.
+          examples:
+          - 20241030
+  securitySchemes:
+    TokenHeader:
+      type: apiKey
+      in: header
+      name: Token
+      description: Derived request signature, not a bearer credential. Account identity is carried in the request body (`user_info.username` / `user_info.password`), which are the developer-platform account email and password.
