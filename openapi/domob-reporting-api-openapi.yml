@@ -73,94 +73,6 @@ paths:
                 $ref: '#/components/schemas/StatsResponse'
 components:
   schemas:
-    UserInfo:
-      type: object
-      description: Developer-platform account credentials, sent in the request body.
-      required:
-      - username
-      - password
-      properties:
-        username:
-          type: string
-          description: Email address the developer-platform account was created with.
-          examples:
-          - test@domob.cn
-        password:
-          type: string
-          format: password
-          description: Password for that developer-platform account.
-    Dimension:
-      type: object
-      required:
-      - label
-      - name
-      properties:
-        label:
-          type: string
-          description: Field key as it appears in each stats row.
-          examples:
-          - day_type
-        name:
-          type: string
-          description: Human-readable (Chinese) name of the field.
-    StatsRequest:
-      type: object
-      required:
-      - user_info
-      - export_info
-      properties:
-        user_info:
-          $ref: '#/components/schemas/UserInfo'
-        export_info:
-          $ref: '#/components/schemas/ExportInfo'
-    StatsResponse:
-      type: object
-      required:
-      - code
-      - data
-      - msg
-      - sysTime
-      properties:
-        code:
-          type: integer
-          description: Response status code. `0` indicates success.
-          examples:
-          - 0
-        data:
-          $ref: '#/components/schemas/StatsData'
-        msg:
-          type: string
-          description: Response status marker.
-          examples:
-          - OK
-        sysTime:
-          type: integer
-          description: Response timestamp (Unix seconds).
-          examples:
-          - 1730364646
-    ExportInfo:
-      type: object
-      description: Query window and optional ad-slot filter.
-      required:
-      - start_dt
-      - end_dt
-      properties:
-        slot_id:
-          type: string
-          description: Ad slot (广告位) ID. Optional; empty string means all slots.
-          default: ''
-          examples:
-          - '1234'
-        start_dt:
-          type: integer
-          description: Start date as an integer in YYYYMMDD form. Defaults to the previous day.
-          examples:
-          - 20241029
-        end_dt:
-          type: integer
-          description: End date as an integer in YYYYMMDD form. Defaults to the previous day.
-          examples:
-          - 20241030
     StatsRow:
       type: object
       required:
@@ -226,6 +138,94 @@ components:
           description: Application ID.
           examples:
           - 4331
+    ExportInfo:
+      type: object
+      description: Query window and optional ad-slot filter.
+      required:
+      - start_dt
+      - end_dt
+      properties:
+        slot_id:
+          type: string
+          description: Ad slot (广告位) ID. Optional; empty string means all slots.
+          default: ''
+          examples:
+          - '1234'
+        start_dt:
+          type: integer
+          description: Start date as an integer in YYYYMMDD form. Defaults to the previous day.
+          examples:
+          - 20241029
+        end_dt:
+          type: integer
+          description: End date as an integer in YYYYMMDD form. Defaults to the previous day.
+          examples:
+          - 20241030
+    StatsResponse:
+      type: object
+      required:
+      - code
+      - data
+      - msg
+      - sysTime
+      properties:
+        code:
+          type: integer
+          description: Response status code. `0` indicates success.
+          examples:
+          - 0
+        data:
+          $ref: '#/components/schemas/StatsData'
+        msg:
+          type: string
+          description: Response status marker.
+          examples:
+          - OK
+        sysTime:
+          type: integer
+          description: Response timestamp (Unix seconds).
+          examples:
+          - 1730364646
+    UserInfo:
+      type: object
+      description: Developer-platform account credentials, sent in the request body.
+      required:
+      - username
+      - password
+      properties:
+        username:
+          type: string
+          description: Email address the developer-platform account was created with.
+          examples:
+          - test@domob.cn
+        password:
+          type: string
+          format: password
+          description: Password for that developer-platform account.
+    StatsRequest:
+      type: object
+      required:
+      - user_info
+      - export_info
+      properties:
+        user_info:
+          $ref: '#/components/schemas/UserInfo'
+        export_info:
+          $ref: '#/components/schemas/ExportInfo'
+    Dimension:
+      type: object
+      required:
+      - label
+      - name
+      properties:
+        label:
+          type: string
+          description: Field key as it appears in each stats row.
+          examples:
+          - day_type
+        name:
+          type: string
+          description: Human-readable (Chinese) name of the field.
     StatsData:
       type: object
       required:
